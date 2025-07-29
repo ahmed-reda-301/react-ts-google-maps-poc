@@ -1,0 +1,42 @@
+[
+  {
+    "id": "checkpoint_riyadh_north",
+    "name": "Riyadh North Checkpoint",
+    "nameAr": "نقطة تفتيش الرياض الشمالية",
+    "location": { "lat": 24.8607, "lng": 46.7219 },
+    "isActive": true,
+    "averageWaitTime": 15,
+    "maxSpeed": 80,
+    "requiredDocuments": ["driving_license", "vehicle_registration", "cargo_manifest"]
+  },
+  {
+    "id": "checkpoint_jeddah_east",
+    "name": "Jeddah East Checkpoint",
+    "nameAr": "نقطة تفتيش جدة الشرقية",
+    "location": { "lat": 21.5433, "lng": 39.2233 },
+    "isActive": true,
+    "averageWaitTime": 12,
+    "maxSpeed": 80,
+    "requiredDocuments": ["driving_license", "vehicle_registration", "cargo_manifest"]
+  },
+  {
+    "id": "checkpoint_dammam_west",
+    "name": "Dammam West Checkpoint",
+    "nameAr": "نقطة تفتيش الدمام الغربية",
+    "location": { "lat": 26.4282, "lng": 50.0888 },
+    "isActive": true,
+    "averageWaitTime": 18,
+    "maxSpeed": 80,
+    "requiredDocuments": ["driving_license", "vehicle_registration", "cargo_manifest"]
+  },
+  {
+    "id": "checkpoint_qassim",
+    "name": "Qassim Regional Checkpoint",
+    "nameAr": "نقطة تفتيش القصيم الإقليمية",
+    "location": { "lat": 26.3269, "lng": 43.9750 },
+    "isActive": true,
+    "averageWaitTime": 20,
+    "maxSpeed": 80,
+    "requiredDocuments": ["driving_license", "vehicle_registration", "cargo_manifest"]
+  }
+]

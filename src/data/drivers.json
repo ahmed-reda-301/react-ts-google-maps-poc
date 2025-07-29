@@ -1,0 +1,29 @@
+[
+  {
+    "id": "driver_001",
+    "name": "Ahmed Mohammed Al-Ali",
+    "licenseNumber": "DL123456789",
+    "phoneNumber": "+966501234567",
+    "nationalId": "1234567890",
+    "experience": 8,
+    "rating": 4.8
+  },
+  {
+    "id": "driver_002",
+    "name": "Mohammed Abdullah Al-Saad",
+    "licenseNumber": "DL987654321",
+    "phoneNumber": "+966509876543",
+    "nationalId": "0987654321",
+    "experience": 12,
+    "rating": 4.9
+  },
+  {
+    "id": "driver_003",
+    "name": "Abdulrahman Saleh Al-Qahtani",
+    "licenseNumber": "DL456789123",
+    "phoneNumber": "+966505555555",
+    "nationalId": "5555555555",
+    "experience": 6,
+    "rating": 4.6
+  }
+]

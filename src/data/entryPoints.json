@@ -1,0 +1,101 @@
+[
+  {
+    "id": "airport_riyadh",
+    "name": "King Khalid International Airport",
+    "nameAr": "مطار الملك خالد الدولي",
+    "type": "AIRPORT",
+    "location": { "lat": 24.9576, "lng": 46.6988 },
+    "isActive": true,
+    "operatingHours": { "open": "00:00", "close": "23:59" },
+    "capacity": 100,
+    "currentLoad": 45
+  },
+  {
+    "id": "airport_jeddah",
+    "name": "King Abdulaziz International Airport",
+    "nameAr": "مطار الملك عبدالعزيز الدولي",
+    "type": "AIRPORT",
+    "location": { "lat": 21.6796, "lng": 39.1564 },
+    "isActive": true,
+    "operatingHours": { "open": "00:00", "close": "23:59" },
+    "capacity": 120,
+    "currentLoad": 67
+  },
+  {
+    "id": "airport_dammam",
+    "name": "King Fahd International Airport",
+    "nameAr": "مطار الملك فهد الدولي",
+    "type": "AIRPORT",
+    "location": { "lat": 26.4712, "lng": 49.7979 },
+    "isActive": true,
+    "operatingHours": { "open": "00:00", "close": "23:59" },
+    "capacity": 80,
+    "currentLoad": 32
+  },
+  {
+    "id": "port_jeddah",
+    "name": "Jeddah Islamic Port",
+    "nameAr": "ميناء جدة الإسلامي",
+    "type": "SEAPORT",
+    "location": { "lat": 21.4858, "lng": 39.1925 },
+    "isActive": true,
+    "operatingHours": { "open": "06:00", "close": "22:00" },
+    "capacity": 200,
+    "currentLoad": 156
+  },
+  {
+    "id": "port_dammam",
+    "name": "King Abdul Aziz Port",
+    "nameAr": "ميناء الملك عبدالعزيز",
+    "type": "SEAPORT",
+    "location": { "lat": 26.3927, "lng": 50.1063 },
+    "isActive": true,
+    "operatingHours": { "open": "06:00", "close": "22:00" },
+    "capacity": 180,
+    "currentLoad": 134
+  },
+  {
+    "id": "port_yanbu",
+    "name": "Yanbu Commercial Port",
+    "nameAr": "ميناء ينبع التجاري",
+    "type": "SEAPORT",
+    "location": { "lat": 24.0889, "lng": 38.0617 },
+    "isActive": true,
+    "operatingHours": { "open": "06:00", "close": "22:00" },
+    "capacity": 150,
+    "currentLoad": 89
+  },
+  {
+    "id": "border_haditha",
+    "name": "Al Haditha Border Crossing",
+    "nameAr": "منفذ الحديثة الحدودي",
+    "type": "LAND_BORDER",
+    "location": { "lat": 32.4056, "lng": 41.9981 },
+    "isActive": true,
+    "operatingHours": { "open": "06:00", "close": "22:00" },
+    "capacity": 50,
+    "currentLoad": 23
+  },
+  {
+    "id": "border_jadidat_arar",
+    "name": "Jadidat Arar Border Crossing",
+    "nameAr": "منفذ جديدة عرعر الحدودي",
+    "type": "LAND_BORDER",
+    "location": { "lat": 30.9756, "lng": 41.0378 },
+    "isActive": true,
+    "operatingHours": { "open": "06:00", "close": "22:00" },
+    "capacity": 60,
+    "currentLoad": 34
+  },
+  {
+    "id": "border_salwa",
+    "name": "Salwa Border Crossing",
+    "nameAr": "منفذ سلوى الحدودي",
+    "type": "LAND_BORDER",
+    "location": { "lat": 24.1392, "lng": 51.0136 },
+    "isActive": true,
+    "operatingHours": { "open": "06:00", "close": "22:00" },
+    "capacity": 40,
+    "currentLoad": 18
+  }
+]

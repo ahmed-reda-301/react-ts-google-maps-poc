@@ -1,0 +1,42 @@
+[
+  {
+    "id": "vehicle_001",
+    "plateNumber": "RYD 1234",
+    "type": "CONTAINER_TRUCK",
+    "model": "Volvo FH16",
+    "year": 2022,
+    "capacity": 40,
+    "fuelType": "Diesel",
+    "currentLocation": { "lat": 24.7136, "lng": 46.6753 },
+    "speed": 75,
+    "heading": 45,
+    "isLocked": true,
+    "sensorData": {
+      "temperature": 22,
+      "humidity": 45,
+      "doorStatus": "CLOSED",
+      "engineStatus": "ON",
+      "fuelLevel": 78
+    }
+  },
+  {
+    "id": "vehicle_002",
+    "plateNumber": "JED 5678",
+    "type": "REFRIGERATED",
+    "model": "Mercedes Actros",
+    "year": 2021,
+    "capacity": 25,
+    "fuelType": "Diesel",
+    "currentLocation": { "lat": 21.5433, "lng": 39.1728 },
+    "speed": 65,
+    "heading": 90,
+    "isLocked": true,
+    "sensorData": {
+      "temperature": -18,
+      "humidity": 30,
+      "doorStatus": "CLOSED",
+      "engineStatus": "ON",
+      "fuelLevel": 65
+    }
+  }
+]

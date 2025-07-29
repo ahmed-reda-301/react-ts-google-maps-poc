@@ -13,6 +13,8 @@ const navigationItems = [
   { path: '/polygons', label: 'Polygons & Areas', icon: '🔷' },
   { path: '/geolocation', label: 'Geolocation', icon: '📍' },
   { path: '/directions', label: 'Directions', icon: '🧭' },
+  { path: '/entry-points', label: 'Entry Points', icon: '🏭' },
+  { path: '/trip-tracking', label: 'Trip Tracking', icon: '🚛' },
 ];
 
 /**

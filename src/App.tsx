@@ -9,6 +9,8 @@ import PolylinesPage from './pages/PolylinesPage';
 import PolygonsPage from './pages/PolygonsPage';
 import GeolocationPage from './pages/GeolocationPage';
 import DirectionsPage from './pages/DirectionsPage';
+import EntryPointsPage from './pages/EntryPointsPage';
+import TripTrackingPage from './pages/TripTrackingPage';
 import './App.css';
 
 /**
@@ -27,6 +29,8 @@ const App: FC = () => {
           <Route path="/polygons" element={<PolygonsPage />} />
           <Route path="/geolocation" element={<GeolocationPage />} />
           <Route path="/directions" element={<DirectionsPage />} />
+          <Route path="/entry-points" element={<EntryPointsPage />} />
+          <Route path="/trip-tracking" element={<TripTrackingPage />} />
         </Routes>
       </Layout>
     </Router>

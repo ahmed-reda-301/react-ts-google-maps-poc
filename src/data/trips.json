@@ -1,0 +1,93 @@
+[
+  {
+    "id": "trip_001",
+    "name": "Riyadh - Jeddah Route RJ001",
+    "status": "IN_PROGRESS",
+    "driverId": "driver_001",
+    "vehicleId": "vehicle_001",
+    "cargo": {
+      "id": "cargo_001",
+      "type": "Electronics",
+      "weight": 15.5,
+      "value": 250000,
+      "description": "Various electronic devices",
+      "isHazardous": false,
+      "temperatureControlled": false
+    },
+    "originId": "airport_riyadh",
+    "destinationId": "port_jeddah",
+    "plannedRoute": [
+      { "lat": 24.9576, "lng": 46.6988 },
+      { "lat": 24.7136, "lng": 46.6753 },
+      { "lat": 23.8859, "lng": 45.0792 },
+      { "lat": 22.7532, "lng": 42.9921 },
+      { "lat": 21.4858, "lng": 39.1925 }
+    ],
+    "actualRoute": [
+      { "lat": 24.9576, "lng": 46.6988 },
+      { "lat": 24.7136, "lng": 46.6753 }
+    ],
+    "checkpointIds": ["checkpoint_riyadh_north", "checkpoint_jeddah_east"],
+    "plannedStartTime": "2024-01-15T08:00:00Z",
+    "actualStartTime": "2024-01-15T08:00:00Z",
+    "plannedEndTime": "2024-01-15T16:00:00Z",
+    "estimatedArrival": "2024-01-15T16:30:00Z",
+    "maxSpeed": 80,
+    "requiredDocuments": ["cargo_manifest", "customs_declaration"],
+    "specialInstructions": ["Avoid mountain roads", "Stop at designated checkpoints"],
+    "currentLocation": { "lat": 24.7136, "lng": 46.6753 },
+    "isOnRoute": true,
+    "speedCompliance": true,
+    "lockCompliance": true,
+    "lastUpdate": "2024-01-15T12:00:00Z",
+    "distanceTraveled": 120,
+    "remainingDistance": 480,
+    "averageSpeed": 72,
+    "fuelConsumption": 45,
+    "alerts": []
+  },
+  {
+    "id": "trip_002",
+    "name": "Jeddah - Dammam Route JD002",
+    "status": "PLANNED",
+    "driverId": "driver_002",
+    "vehicleId": "vehicle_002",
+    "cargo": {
+      "id": "cargo_002",
+      "type": "Frozen Food",
+      "weight": 20.0,
+      "value": 150000,
+      "description": "Frozen food products",
+      "isHazardous": false,
+      "temperatureControlled": true,
+      "requiredTemperature": { "min": -20, "max": -15 }
+    },
+    "originId": "port_jeddah",
+    "destinationId": "port_dammam",
+    "plannedRoute": [
+      { "lat": 21.4858, "lng": 39.1925 },
+      { "lat": 22.7532, "lng": 42.9921 },
+      { "lat": 24.7136, "lng": 46.6753 },
+      { "lat": 25.3548, "lng": 49.5831 },
+      { "lat": 26.3927, "lng": 50.1063 }
+    ],
+    "actualRoute": [],
+    "checkpointIds": ["checkpoint_jeddah_east", "checkpoint_riyadh_north", "checkpoint_dammam_west"],
+    "plannedStartTime": "2024-01-15T14:00:00Z",
+    "plannedEndTime": "2024-01-15T22:00:00Z",
+    "estimatedArrival": "2024-01-15T22:00:00Z",
+    "maxSpeed": 80,
+    "requiredDocuments": ["cargo_manifest", "temperature_certificate"],
+    "specialInstructions": ["Maintain temperature", "Regular cooling system checks"],
+    "currentLocation": { "lat": 21.4858, "lng": 39.1925 },
+    "isOnRoute": false,
+    "speedCompliance": true,
+    "lockCompliance": true,
+    "lastUpdate": "2024-01-15T12:00:00Z",
+    "distanceTraveled": 0,
+    "remainingDistance": 750,
+    "averageSpeed": 0,
+    "fuelConsumption": 0,
+    "alerts": []
+  }
+]
