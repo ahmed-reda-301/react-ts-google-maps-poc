@@ -141,7 +141,7 @@ const CustomMarkersPage: React.FC = () => {
                 id={marker.id}
                 position={marker.position}
                 title={marker.title}
-                category={marker.type}
+                category={marker.type as "restaurant" | "hotel" | "attraction"}
               />
             ))}
           </GoogleMap>

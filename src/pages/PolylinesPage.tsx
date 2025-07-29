@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
-import GoogleMap from '../components/maps/GoogleMap';
-import Polyline from '../components/maps/Polyline';
-import CustomMarker from '../components/maps/CustomMarker';
+import { LoadScript, GoogleMap, Polyline, Marker } from '@react-google-maps/api';
 import { Button, Card, InfoBox, CodeBlock } from '../components/ui';
 import { LatLng } from '../types/common/LatLng';
+
+const containerStyle = {
+  width: '100%',
+  height: '500px',
+};
 
 interface RouteData {
   id: string;
@@ -204,60 +207,66 @@ const PolylinesPage: React.FC = () => {
       </InfoBox>
 
       <div style={{ height: '500px', marginBottom: '30px', border: '1px solid #ddd', borderRadius: '8px' }}>
-        <GoogleMap
-          center={{ lat: 30.0444, lng: 31.2357 }}
-          zoom={12}
-          onClick={handleMapClick}
-        >
-          {/* Selected Route Polyline */}
-          {selectedRoute && (
-            <Polyline
-              path={selectedRoute.path}
-              strokeColor={selectedRoute.color}
-              strokeWeight={selectedRoute.strokeWeight}
-              strokeOpacity={0.8}
-            />
-          )}
+        <LoadScript googleMapsApiKey={process.env.REACT_APP_GOOGLE_MAPS_API_KEY || ""}>
+          <GoogleMap
+            mapContainerStyle={containerStyle}
+            center={{ lat: 30.0444, lng: 31.2357 }}
+            zoom={12}
+            onClick={handleMapClick}
+          >
+            {/* Selected Route Polyline */}
+            {selectedRoute && (
+              <Polyline
+                path={selectedRoute.path}
+                options={{
+                  strokeColor: selectedRoute.color,
+                  strokeWeight: selectedRoute.strokeWeight,
+                  strokeOpacity: 0.8,
+                }}
+              />
+            )}
 
-          {/* Custom Path Polyline */}
-          {customPath.length > 1 && (
-            <Polyline
-              path={customPath}
-              strokeColor="#FF00FF"
-              strokeWeight={3}
-              strokeOpacity={0.8}
-              strokeDashArray="10,5"
-            />
-          )}
+            {/* Custom Path Polyline */}
+            {customPath.length > 1 && (
+              <Polyline
+                path={customPath}
+                options={{
+                  strokeColor: "#FF00FF",
+                  strokeWeight: 3,
+                  strokeOpacity: 0.8,
+                }}
+              />
+            )}
 
-          {/* Route Markers */}
-          {showMarkers && selectedRoute && selectedRoute.path.map((point, index) => (
-            <CustomMarker
-              key={`route-${selectedRoute.id}-${index}`}
-              position={point}
-              title={`${selectedRoute.name} - Point ${index + 1}`}
-              icon={{
-                url: index === 0 ? 'https://maps.google.com/mapfiles/ms/icons/green-dot.png' : 
-                     index === selectedRoute.path.length - 1 ? 'https://maps.google.com/mapfiles/ms/icons/red-dot.png' :
-                     'https://maps.google.com/mapfiles/ms/icons/blue-dot.png',
-                scaledSize: new google.maps.Size(32, 32)
-              }}
-            />
-          ))}
+            {/* Route Markers */}
+            {showMarkers && selectedRoute && selectedRoute.path.map((point, index) => (
+              <Marker
+                key={`route-${selectedRoute.id}-${index}`}
+                position={point}
+                title={`${selectedRoute.name} - Point ${index + 1}`}
+                icon={{
+                  url: index === 0 ? 'https://maps.google.com/mapfiles/ms/icons/green-dot.png' : 
+                       index === selectedRoute.path.length - 1 ? 'https://maps.google.com/mapfiles/ms/icons/red-dot.png' :
+                       'https://maps.google.com/mapfiles/ms/icons/blue-dot.png',
+                  scaledSize: new google.maps.Size(32, 32)
+                }}
+              />
+            ))}
 
-          {/* Custom Path Markers */}
-          {customPath.map((point, index) => (
-            <CustomMarker
-              key={`custom-${index}`}
-              position={point}
-              title={`Custom Point ${index + 1}`}
-              icon={{
-                url: 'https://maps.google.com/mapfiles/ms/icons/purple-dot.png',
-                scaledSize: new google.maps.Size(24, 24)
-              }}
-            />
-          ))}
-        </GoogleMap>
+            {/* Custom Path Markers */}
+            {customPath.map((point, index) => (
+              <Marker
+                key={`custom-${index}`}
+                position={point}
+                title={`Custom Point ${index + 1}`}
+                icon={{
+                  url: 'https://maps.google.com/mapfiles/ms/icons/purple-dot.png',
+                  scaledSize: new google.maps.Size(24, 24)
+                }}
+              />
+            ))}
+          </GoogleMap>
+        </LoadScript>
       </div>
 
       <Card>

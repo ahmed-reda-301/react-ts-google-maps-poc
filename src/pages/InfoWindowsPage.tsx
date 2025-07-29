@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
-import GoogleMap from '../components/maps/GoogleMap';
-import CustomMarker from '../components/maps/CustomMarker';
-import InfoWindow from '../components/maps/InfoWindow';
+import { LoadScript, GoogleMap, Marker, InfoWindow } from '@react-google-maps/api';
 import { Button, Card, InfoBox, CodeBlock } from '../components/ui';
 import { LatLng } from '../types/common/LatLng';
+
+const containerStyle = {
+  width: '100%',
+  height: '500px',
+};
 
 interface MarkerData {
   id: string;
@@ -107,84 +110,87 @@ const InfoWindowsPage: React.FC = () => {
       </InfoBox>
 
       <div style={{ height: '500px', marginBottom: '30px', border: '1px solid #ddd', borderRadius: '8px' }}>
-        <GoogleMap
-          center={{ lat: 30.0444, lng: 31.2357 }}
-          zoom={13}
-        >
-          {markers.map((marker) => (
-            <React.Fragment key={marker.id}>
-              <CustomMarker
-                position={marker.position}
-                title={marker.title}
-                onClick={() => handleMarkerClick(marker.id)}
-                icon={{
-                  url: 'https://maps.google.com/mapfiles/ms/icons/red-dot.png',
-                  scaledSize: new google.maps.Size(32, 32)
-                }}
-              />
-              {selectedMarkerId === marker.id && (
-                <InfoWindow
+        <LoadScript googleMapsApiKey={process.env.REACT_APP_GOOGLE_MAPS_API_KEY || ""}>
+          <GoogleMap
+            mapContainerStyle={containerStyle}
+            center={{ lat: 30.0444, lng: 31.2357 }}
+            zoom={13}
+          >
+            {markers.map((marker) => (
+              <React.Fragment key={marker.id}>
+                <Marker
                   position={marker.position}
-                  onCloseClick={closeInfoWindow}
-                >
-                  <div style={{ maxWidth: '300px', padding: '10px' }}>
-                    {marker.image && (
-                      <img
-                        src={marker.image}
-                        alt={marker.title}
-                        style={{
-                          width: '100%',
-                          height: '150px',
-                          objectFit: 'cover',
-                          borderRadius: '8px',
-                          marginBottom: '10px'
-                        }}
-                      />
-                    )}
-                    <h3 style={{ margin: '0 0 8px 0', color: '#333' }}>{marker.title}</h3>
-                    <div style={{ marginBottom: '8px' }}>
-                      <span style={{ 
-                        backgroundColor: '#e3f2fd', 
-                        color: '#1976d2', 
-                        padding: '2px 8px', 
-                        borderRadius: '12px', 
-                        fontSize: '12px',
-                        fontWeight: 'bold'
-                      }}>
-                        {marker.category}
-                      </span>
-                    </div>
-                    {marker.rating && (
-                      <div style={{ marginBottom: '8px', display: 'flex', alignItems: 'center', gap: '5px' }}>
-                        <span>{renderStars(marker.rating)}</span>
-                        <span style={{ fontSize: '14px', color: '#666' }}>({marker.rating})</span>
+                  title={marker.title}
+                  onClick={() => handleMarkerClick(marker.id)}
+                  icon={{
+                    url: 'https://maps.google.com/mapfiles/ms/icons/red-dot.png',
+                    scaledSize: new google.maps.Size(32, 32)
+                  }}
+                />
+                {selectedMarkerId === marker.id && (
+                  <InfoWindow
+                    position={marker.position}
+                    onCloseClick={closeInfoWindow}
+                  >
+                    <div style={{ maxWidth: '300px', padding: '10px' }}>
+                      {marker.image && (
+                        <img
+                          src={marker.image}
+                          alt={marker.title}
+                          style={{
+                            width: '100%',
+                            height: '150px',
+                            objectFit: 'cover',
+                            borderRadius: '8px',
+                            marginBottom: '10px'
+                          }}
+                        />
+                      )}
+                      <h3 style={{ margin: '0 0 8px 0', color: '#333' }}>{marker.title}</h3>
+                      <div style={{ marginBottom: '8px' }}>
+                        <span style={{ 
+                          backgroundColor: '#e3f2fd', 
+                          color: '#1976d2', 
+                          padding: '2px 8px', 
+                          borderRadius: '12px', 
+                          fontSize: '12px',
+                          fontWeight: 'bold'
+                        }}>
+                          {marker.category}
+                        </span>
                       </div>
-                    )}
-                    <p style={{ margin: '0', fontSize: '14px', lineHeight: '1.4', color: '#555' }}>
-                      {marker.description}
-                    </p>
-                    <div style={{ marginTop: '10px', textAlign: 'center' }}>
-                      <button
-                        style={{
-                          backgroundColor: '#1976d2',
-                          color: 'white',
-                          border: 'none',
-                          padding: '6px 12px',
-                          borderRadius: '4px',
-                          cursor: 'pointer',
-                          fontSize: '12px'
-                        }}
-                        onClick={() => alert(`More info about ${marker.title}`)}
-                      >
-                        Learn More
-                      </button>
+                      {marker.rating && (
+                        <div style={{ marginBottom: '8px', display: 'flex', alignItems: 'center', gap: '5px' }}>
+                          <span>{renderStars(marker.rating)}</span>
+                          <span style={{ fontSize: '14px', color: '#666' }}>({marker.rating})</span>
+                        </div>
+                      )}
+                      <p style={{ margin: '0', fontSize: '14px', lineHeight: '1.4', color: '#555' }}>
+                        {marker.description}
+                      </p>
+                      <div style={{ marginTop: '10px', textAlign: 'center' }}>
+                        <button
+                          style={{
+                            backgroundColor: '#1976d2',
+                            color: 'white',
+                            border: 'none',
+                            padding: '6px 12px',
+                            borderRadius: '4px',
+                            cursor: 'pointer',
+                            fontSize: '12px'
+                          }}
+                          onClick={() => alert(`More info about ${marker.title}`)}
+                        >
+                          Learn More
+                        </button>
+                      </div>
                     </div>
-                  </div>
-                </InfoWindow>
-              )}
-            </React.Fragment>
-          ))}
-        </GoogleMap>
+                  </InfoWindow>
+                )}
+              </React.Fragment>
+            ))}
+          </GoogleMap>
+        </LoadScript>
       </div>
 
       <Card>

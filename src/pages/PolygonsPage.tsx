@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
-import GoogleMap from '../components/maps/GoogleMap';
-import Polygon from '../components/maps/Polygon';
-import CustomMarker from '../components/maps/CustomMarker';
+import { LoadScript, GoogleMap, Polygon, Marker } from '@react-google-maps/api';
 import { Button, Card, InfoBox, CodeBlock } from '../components/ui';
 import { LatLng } from '../types/common/LatLng';
+
+const containerStyle = {
+  width: '100%',
+  height: '500px',
+};
 
 interface AreaData {
   id: string;
@@ -235,73 +238,80 @@ const PolygonsPage: React.FC = () => {
       </InfoBox>
 
       <div style={{ height: '500px', marginBottom: '30px', border: '1px solid #ddd', borderRadius: '8px' }}>
-        <GoogleMap
-          center={{ lat: 30.0444, lng: 31.2357 }}
-          zoom={12}
-          onClick={handleMapClick}
-        >
-          {/* Selected Area Polygon */}
-          {selectedArea && (
-            <Polygon
-              paths={selectedArea.paths}
-              fillColor={selectedArea.fillColor}
-              fillOpacity={selectedArea.fillOpacity}
-              strokeColor={selectedArea.strokeColor}
-              strokeWeight={selectedArea.strokeWeight}
-              strokeOpacity={0.8}
-            />
-          )}
+        <LoadScript googleMapsApiKey={process.env.REACT_APP_GOOGLE_MAPS_API_KEY || ""}>
+          <GoogleMap
+            mapContainerStyle={containerStyle}
+            center={{ lat: 30.0444, lng: 31.2357 }}
+            zoom={12}
+            onClick={handleMapClick}
+          >
+            {/* Selected Area Polygon */}
+            {selectedArea && (
+              <Polygon
+                paths={selectedArea.paths}
+                options={{
+                  fillColor: selectedArea.fillColor,
+                  fillOpacity: selectedArea.fillOpacity,
+                  strokeColor: selectedArea.strokeColor,
+                  strokeWeight: selectedArea.strokeWeight,
+                  strokeOpacity: 0.8,
+                }}
+              />
+            )}
 
-          {/* Custom Polygon */}
-          {customPolygon.length >= 3 && (
-            <Polygon
-              paths={customPolygon}
-              fillColor="#FF00FF"
-              fillOpacity={0.3}
-              strokeColor="#AA00AA"
-              strokeWeight={2}
-              strokeOpacity={0.8}
-            />
-          )}
+            {/* Custom Polygon */}
+            {customPolygon.length >= 3 && (
+              <Polygon
+                paths={customPolygon}
+                options={{
+                  fillColor: "#FF00FF",
+                  fillOpacity: 0.3,
+                  strokeColor: "#AA00AA",
+                  strokeWeight: 2,
+                  strokeOpacity: 0.8,
+                }}
+              />
+            )}
 
-          {/* Area Boundary Markers */}
-          {showMarkers && selectedArea && selectedArea.paths.map((point, index) => (
-            <CustomMarker
-              key={`area-${selectedArea.id}-${index}`}
-              position={point}
-              title={`${selectedArea.name} - Vertex ${index + 1}`}
-              icon={{
-                url: 'https://maps.google.com/mapfiles/ms/icons/yellow-dot.png',
-                scaledSize: new google.maps.Size(24, 24)
-              }}
-            />
-          ))}
+            {/* Area Boundary Markers */}
+            {showMarkers && selectedArea && selectedArea.paths.map((point, index) => (
+              <Marker
+                key={`area-${selectedArea.id}-${index}`}
+                position={point}
+                title={`${selectedArea.name} - Vertex ${index + 1}`}
+                icon={{
+                  url: 'https://maps.google.com/mapfiles/ms/icons/yellow-dot.png',
+                  scaledSize: new google.maps.Size(24, 24)
+                }}
+              />
+            ))}
 
-          {/* Custom Polygon Markers */}
-          {customPolygon.map((point, index) => (
-            <CustomMarker
-              key={`custom-vertex-${index}`}
-              position={point}
-              title={`Custom Vertex ${index + 1}`}
-              icon={{
-                url: 'https://maps.google.com/mapfiles/ms/icons/purple-dot.png',
-                scaledSize: new google.maps.Size(20, 20)
-              }}
-            />
-          ))}
+            {/* Custom Polygon Markers */}
+            {customPolygon.map((point, index) => (
+              <Marker
+                key={`custom-vertex-${index}`}
+                position={point}
+                title={`Custom Vertex ${index + 1}`}
+                icon={{
+                  url: 'https://maps.google.com/mapfiles/ms/icons/purple-dot.png',
+                  scaledSize: new google.maps.Size(20, 20)
+                }}
+              />
+            ))}
 
-          {/* Area Center Markers */}
-          {selectedArea && (
-            <CustomMarker
-              position={getPolygonCenter(selectedArea.paths)}
-              title={`${selectedArea.name} Center`}
-              icon={{
-                url: 'https://maps.google.com/mapfiles/ms/icons/info-i.png',
-                scaledSize: new google.maps.Size(32, 32)
-              }}
-            />
-          )}
-        </GoogleMap>
+            {/* Area Center Markers */}
+            {selectedArea && (
+              <Marker
+                position={getPolygonCenter(selectedArea.paths)}
+                title={`${selectedArea.name} Center`}
+                icon={{
+                  url: 'https://maps.google.com/mapfiles/ms/icons/info-i.png',
+                  scaledSize: new google.maps.Size(32, 32)
+                }}
+              />
+            )}
+          </GoogleMap>
+        </LoadScript>
       </div>
 
       <Card>

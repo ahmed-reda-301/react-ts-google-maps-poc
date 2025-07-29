@@ -1,24 +1,27 @@
 import React, { useState, useEffect } from 'react';
-import GoogleMap from '../components/maps/GoogleMap';
-import CustomMarker from '../components/maps/CustomMarker';
+import { LoadScript, GoogleMap, Marker } from '@react-google-maps/api';
 import { Button, Card, InfoBox, CodeBlock } from '../components/ui';
 import { useGeolocation } from '../hooks/useGeolocation';
 import { LatLng } from '../types/common/LatLng';
+
+const containerStyle = {
+  width: '100%',
+  height: '500px',
+};
 
 /**
  * Geolocation Page - Demonstrates geolocation features and user positioning
  */
 const GeolocationPage: React.FC = () => {
-  const { location, error, loading, getCurrentLocation, watchLocation, clearWatch } = useGeolocation();
+  const { position, error, loading, getCurrentLocation, watchPosition, clearWatch } = useGeolocation();
   const [isWatching, setIsWatching] = useState<boolean>(false);
   const [locationHistory, setLocationHistory] = useState<Array<{ position: LatLng; timestamp: Date }>>([]);
   const [mapCenter, setMapCenter] = useState<LatLng>({ lat: 30.0444, lng: 31.2357 });
-  const [showAccuracyCircle, setShowAccuracyCircle] = useState<boolean>(true);
 
   useEffect(() => {
-    if (location) {
+    if (position) {
       const newLocation = {
-        position: { lat: location.latitude, lng: location.longitude },
+        position: { lat: position.coords.latitude, lng: position.coords.longitude },
         timestamp: new Date()
       };
       
@@ -28,16 +31,16 @@ const GeolocationPage: React.FC = () => {
         return updated.slice(-10);
       });
       
-      setMapCenter({ lat: location.latitude, lng: location.longitude });
+      setMapCenter({ lat: position.coords.latitude, lng: position.coords.longitude });
     }
-  }, [location]);
+  }, [position]);
 
   const handleGetCurrentLocation = () => {
     getCurrentLocation();
   };
 
   const handleStartWatching = () => {
-    watchLocation();
+    watchPosition();
     setIsWatching(true);
   };
 
@@ -75,15 +78,15 @@ const GeolocationPage: React.FC = () => {
 
   const getLocationStatus = (): string => {
     if (loading) return 'Getting location...';
-    if (error) return `Error: ${error}`;
-    if (location) return 'Location found';
+    if (error) return `Error: ${error.message}`;
+    if (position) return 'Location found';
     return 'No location data';
   };
 
   const getLocationStatusType = (): 'info' | 'warning' | 'error' => {
     if (loading) return 'info';
     if (error) return 'error';
-    if (location) return 'info';
+    if (position) return 'info';
     return 'warning';
   };
 
@@ -113,17 +116,6 @@ const GeolocationPage: React.FC = () => {
             </Button>
           </div>
 
-          <div style={{ marginBottom: '15px' }}>
-            <label style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <input
-                type="checkbox"
-                checked={showAccuracyCircle}
-                onChange={(e) => setShowAccuracyCircle(e.target.checked)}
-              />
-              Show Accuracy Circle
-            </label>
-          </div>
-
           <div style={{ fontSize: '14px', color: '#666' }}>
             <p><strong>Status:</strong> {getLocationStatus()}</p>
             <p><strong>Watching:</strong> {isWatching ? 'Active' : 'Inactive'}</p>
@@ -133,21 +125,21 @@ const GeolocationPage: React.FC = () => {
 
         <Card>
           <h3>Current Location Data</h3>
-          {location ? (
+          {position ? (
             <div style={{ fontSize: '14px' }}>
-              <p><strong>Latitude:</strong> {formatCoordinate(location.latitude)}</p>
-              <p><strong>Longitude:</strong> {formatCoordinate(location.longitude)}</p>
-              <p><strong>Accuracy:</strong> ±{location.accuracy?.toFixed(0)} meters</p>
-              {location.altitude && (
-                <p><strong>Altitude:</strong> {location.altitude.toFixed(0)} meters</p>
+              <p><strong>Latitude:</strong> {formatCoordinate(position.coords.latitude)}</p>
+              <p><strong>Longitude:</strong> {formatCoordinate(position.coords.longitude)}</p>
+              <p><strong>Accuracy:</strong> ±{position.coords.accuracy?.toFixed(0)} meters</p>
+              {position.coords.altitude && (
+                <p><strong>Altitude:</strong> {position.coords.altitude.toFixed(0)} meters</p>
               )}
-              {location.heading && (
-                <p><strong>Heading:</strong> {location.heading.toFixed(0)}°</p>
+              {position.coords.heading && (
+                <p><strong>Heading:</strong> {position.coords.heading.toFixed(0)}°</p>
               )}
-              {location.speed && (
-                <p><strong>Speed:</strong> {(location.speed * 3.6).toFixed(1)} km/h</p>
+              {position.coords.speed && (
+                <p><strong>Speed:</strong> {(position.coords.speed * 3.6).toFixed(1)} km/h</p>
               )}
-              <p><strong>Timestamp:</strong> {new Date(location.timestamp).toLocaleString()}</p>
+              <p><strong>Timestamp:</strong> {new Date(position.timestamp).toLocaleString()}</p>
             </div>
           ) : (
             <p style={{ color: '#666', fontStyle: 'italic' }}>
@@ -163,43 +155,38 @@ const GeolocationPage: React.FC = () => {
       </InfoBox>
 
       <div style={{ height: '500px', marginBottom: '30px', border: '1px solid #ddd', borderRadius: '8px' }}>
-        <GoogleMap
-          center={mapCenter}
-          zoom={15}
-        >
-          {/* Current Location Marker */}
-          {location && (
-            <CustomMarker
-              position={{ lat: location.latitude, lng: location.longitude }}
-              title={`Current Location (±${location.accuracy?.toFixed(0)}m)`}
-              icon={{
-                url: 'https://maps.google.com/mapfiles/ms/icons/blue-dot.png',
-                scaledSize: new google.maps.Size(40, 40)
-              }}
-            />
-          )}
+        <LoadScript googleMapsApiKey={process.env.REACT_APP_GOOGLE_MAPS_API_KEY || ""}>
+          <GoogleMap
+            mapContainerStyle={containerStyle}
+            center={mapCenter}
+            zoom={15}
+          >
+            {/* Current Location Marker */}
+            {position && (
+              <Marker
+                position={{ lat: position.coords.latitude, lng: position.coords.longitude }}
+                title={`Current Location (±${position.coords.accuracy?.toFixed(0)}m)`}
+                icon={{
+                  url: 'https://maps.google.com/mapfiles/ms/icons/blue-dot.png',
+                  scaledSize: new google.maps.Size(40, 40)
+                }}
+              />
+            )}
 
-          {/* Location History Markers */}
-          {locationHistory.slice(0, -1).map((historyPoint, index) => (
-            <CustomMarker
-              key={`history-${index}`}
-              position={historyPoint.position}
-              title={`Previous Location - ${formatTimestamp(historyPoint.timestamp)}`}
-              icon={{
-                url: 'https://maps.google.com/mapfiles/ms/icons/grey-dot.png',
-                scaledSize: new google.maps.Size(20, 20)
-              }}
-            />
-          ))}
-
-          {/* Accuracy Circle */}
-          {location && showAccuracyCircle && location.accuracy && (
-            <div>
-              {/* Note: In a real implementation, you would use a Circle component */}
-              {/* This is a placeholder for the accuracy circle visualization */}
-            </div>
-          )}
-        </GoogleMap>
+            {/* Location History Markers */}
+            {locationHistory.slice(0, -1).map((historyPoint, index) => (
+              <Marker
+                key={`history-${index}`}
+                position={historyPoint.position}
+                title={`Previous Location - ${formatTimestamp(historyPoint.timestamp)}`}
+                icon={{
+                  url: 'https://maps.google.com/mapfiles/ms/icons/grey-dot.png',
+                  scaledSize: new google.maps.Size(20, 20)
+                }}
+              />
+            ))}
+          </GoogleMap>
+        </LoadScript>
       </div>
 
       {/* Location History Table */}
@@ -249,7 +236,7 @@ const GeolocationPage: React.FC = () => {
 import { useGeolocation } from '../hooks/useGeolocation';
 
 // In your component
-const { location, error, loading, getCurrentLocation, watchLocation, clearWatch } = useGeolocation();
+const { position, error, loading, getCurrentLocation, watchPosition, clearWatch } = useGeolocation();
 
 // Get current location once
 const handleGetLocation = () => {
@@ -258,14 +245,14 @@ const handleGetLocation = () => {
 
 // Watch location continuously
 const handleWatchLocation = () => {
-  watchLocation();
+  watchPosition();
 };
 
 // Display current location
-{location && (
-  <CustomMarker
-    position={{ lat: location.latitude, lng: location.longitude }}
-    title={\`Current Location (±\${location.accuracy}m)\`}
+{position && (
+  <Marker
+    position={{ lat: position.coords.latitude, lng: position.coords.longitude }}
+    title={\`Current Location (±\${position.coords.accuracy}m)\`}
   />
 )}`}
         </CodeBlock>
