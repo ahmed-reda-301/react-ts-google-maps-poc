@@ -248,7 +248,7 @@ const PolylinesPage: React.FC = () => {
                   url: index === 0 ? 'https://maps.google.com/mapfiles/ms/icons/green-dot.png' : 
                        index === selectedRoute.path.length - 1 ? 'https://maps.google.com/mapfiles/ms/icons/red-dot.png' :
                        'https://maps.google.com/mapfiles/ms/icons/blue-dot.png',
-                  scaledSize: new google.maps.Size(32, 32)
+                  scaledSize: typeof google !== 'undefined' ? new google.maps.Size(32, 32) : undefined
                 }}
               />
             ))}
@@ -261,7 +261,7 @@ const PolylinesPage: React.FC = () => {
                 title={`Custom Point ${index + 1}`}
                 icon={{
                   url: 'https://maps.google.com/mapfiles/ms/icons/purple-dot.png',
-                  scaledSize: new google.maps.Size(24, 24)
+                  scaledSize: typeof google !== 'undefined' ? new google.maps.Size(24, 24) : undefined
                 }}
               />
             ))}

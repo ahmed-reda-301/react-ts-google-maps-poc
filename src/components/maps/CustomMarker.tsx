@@ -67,7 +67,7 @@ const CustomMarker: FC<CustomMarkerProps> = ({
       if (typeof customIcon === 'string') {
         return {
           url: customIcon,
-          scaledSize: new google.maps.Size(32 * scale, 32 * scale),
+          scaledSize: typeof google !== 'undefined' ? new google.maps.Size(32 * scale, 32 * scale) : undefined,
         };
       }
       return customIcon;
@@ -76,20 +76,20 @@ const CustomMarker: FC<CustomMarkerProps> = ({
     if (color && MARKER_COLORS[color]) {
       return {
         url: MARKER_COLORS[color],
-        scaledSize: new google.maps.Size(32 * scale, 32 * scale),
+        scaledSize: typeof google !== 'undefined' ? new google.maps.Size(32 * scale, 32 * scale) : undefined,
       };
     }
 
     if (category && CATEGORY_ICONS[category]) {
       return {
         url: CATEGORY_ICONS[category],
-        scaledSize: new google.maps.Size(32 * scale, 32 * scale),
+        scaledSize: typeof google !== 'undefined' ? new google.maps.Size(32 * scale, 32 * scale) : undefined,
       };
     }
 
     return {
       url: CATEGORY_ICONS.custom,
-      scaledSize: new google.maps.Size(32 * scale, 32 * scale),
+      scaledSize: typeof google !== 'undefined' ? new google.maps.Size(32 * scale, 32 * scale) : undefined,
     };
   }, [customIcon, color, category, scale]);
 

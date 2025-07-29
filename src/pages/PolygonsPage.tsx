@@ -281,7 +281,7 @@ const PolygonsPage: React.FC = () => {
                 title={`${selectedArea.name} - Vertex ${index + 1}`}
                 icon={{
                   url: 'https://maps.google.com/mapfiles/ms/icons/yellow-dot.png',
-                  scaledSize: new google.maps.Size(24, 24)
+                  scaledSize: typeof google !== 'undefined' ? new google.maps.Size(24, 24) : undefined
                 }}
               />
             ))}
@@ -294,7 +294,7 @@ const PolygonsPage: React.FC = () => {
                 title={`Custom Vertex ${index + 1}`}
                 icon={{
                   url: 'https://maps.google.com/mapfiles/ms/icons/purple-dot.png',
-                  scaledSize: new google.maps.Size(20, 20)
+                  scaledSize: typeof google !== 'undefined' ? new google.maps.Size(20, 20) : undefined
                 }}
               />
             ))}
@@ -306,7 +306,7 @@ const PolygonsPage: React.FC = () => {
                 title={`${selectedArea.name} Center`}
                 icon={{
                   url: 'https://maps.google.com/mapfiles/ms/icons/info-i.png',
-                  scaledSize: new google.maps.Size(32, 32)
+                  scaledSize: typeof google !== 'undefined' ? new google.maps.Size(32, 32) : undefined
                 }}
               />
             )}

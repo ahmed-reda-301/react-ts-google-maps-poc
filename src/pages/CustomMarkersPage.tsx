@@ -161,7 +161,7 @@ import CustomMarker from '../components/maps/CustomMarker';
     title="Restaurant in Cairo"
     icon={{
       url: '/icons/restaurant.png',
-      scaledSize: new google.maps.Size(40, 40)
+      scaledSize: typeof google !== 'undefined' ? new google.maps.Size(40, 40) : undefined
     }}
   />
 </GoogleMap>`}

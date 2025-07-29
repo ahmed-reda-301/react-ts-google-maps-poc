@@ -180,7 +180,7 @@ const DirectionsPage: React.FC = () => {
               title="Cairo - Origin"
               icon={{
                 url: 'https://maps.google.com/mapfiles/ms/icons/green-dot.png',
-                scaledSize: new google.maps.Size(40, 40)
+                scaledSize: typeof google !== 'undefined' ? new google.maps.Size(40, 40) : undefined
               }}
             />
 
@@ -190,7 +190,7 @@ const DirectionsPage: React.FC = () => {
               title="Alexandria - Destination"
               icon={{
                 url: 'https://maps.google.com/mapfiles/ms/icons/red-dot.png',
-                scaledSize: new google.maps.Size(40, 40)
+                scaledSize: typeof google !== 'undefined' ? new google.maps.Size(40, 40) : undefined
               }}
             />
           </GoogleMap>

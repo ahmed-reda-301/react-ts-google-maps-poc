@@ -124,7 +124,7 @@ const InfoWindowsPage: React.FC = () => {
                   onClick={() => handleMarkerClick(marker.id)}
                   icon={{
                     url: 'https://maps.google.com/mapfiles/ms/icons/red-dot.png',
-                    scaledSize: new google.maps.Size(32, 32)
+                    scaledSize: typeof google !== 'undefined' ? new google.maps.Size(32, 32) : undefined
                   }}
                 />
                 {selectedMarkerId === marker.id && (

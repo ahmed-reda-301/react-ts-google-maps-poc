@@ -168,7 +168,7 @@ const GeolocationPage: React.FC = () => {
                 title={`Current Location (±${position.coords.accuracy?.toFixed(0)}m)`}
                 icon={{
                   url: 'https://maps.google.com/mapfiles/ms/icons/blue-dot.png',
-                  scaledSize: new google.maps.Size(40, 40)
+                  scaledSize: typeof google !== 'undefined' ? new google.maps.Size(40, 40) : undefined
                 }}
               />
             )}
@@ -181,7 +181,7 @@ const GeolocationPage: React.FC = () => {
                 title={`Previous Location - ${formatTimestamp(historyPoint.timestamp)}`}
                 icon={{
                   url: 'https://maps.google.com/mapfiles/ms/icons/grey-dot.png',
-                  scaledSize: new google.maps.Size(20, 20)
+                  scaledSize: typeof google !== 'undefined' ? new google.maps.Size(20, 20) : undefined
                 }}
               />
             ))}
