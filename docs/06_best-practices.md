@@ -178,7 +178,7 @@ const useGeolocation = (): UseGeolocationReturn => {
   const [position, setPosition] = useState<GeolocationPosition | null>(null);
   const [error, setError] = useState<GeolocationPositionError | null>(null);
   const [loading, setLoading] = useState(false);
-ل
+
   const getCurrentPosition = useCallback(() => {
     setLoading(true);
     setError(null);

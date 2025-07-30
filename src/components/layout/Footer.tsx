@@ -12,7 +12,7 @@ const Footer: FC = () => {
   };
 
   const containerStyle: React.CSSProperties = {
-    maxWidth: '1200px',
+    maxWidth: '80%',
     margin: '0 auto',
     padding: '0 20px',
   };

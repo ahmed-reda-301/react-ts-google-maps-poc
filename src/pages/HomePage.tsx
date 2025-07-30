@@ -1,5 +1,6 @@
 import React, { FC } from 'react';
 import { Link } from 'react-router-dom';
+import { styles } from '../styles/pageStyles';
 
 /**
  * Feature cards data
@@ -68,18 +69,30 @@ const features = [
     difficulty: 'Advanced',
     topics: ['Navigation', 'Route Optimization', 'Turn-by-turn'],
   },
+  {
+    id: 'entry-points',
+    title: 'Entry Points',
+    description: 'Monitor airports, seaports, and border crossings with real-time data visualization and capacity tracking.',
+    icon: '🛂',
+    path: '/entry-points',
+    difficulty: 'Advanced',
+    topics: ['Border Control', 'Real-time Data', 'Capacity Management'],
+  },
+  {
+    id: 'trip-tracking',
+    title: 'Trip Tracking',
+    description: 'Track vehicle trips in real-time with route compliance monitoring and logistics management features.',
+    icon: '🚛',
+    path: '/trip-tracking',
+    difficulty: 'Advanced',
+    topics: ['Vehicle Tracking', 'Route Compliance', 'Logistics'],
+  },
 ];
 
 /**
  * Home page component
  */
 const HomePage: FC = () => {
-  const containerStyle: React.CSSProperties = {
-    maxWidth: '1200px',
-    margin: '0 auto',
-    padding: '40px 20px',
-  };
-
   const heroStyle: React.CSSProperties = {
     textAlign: 'center',
     marginBottom: '60px',
@@ -108,13 +121,6 @@ const HomePage: FC = () => {
     margin: '0 auto',
     lineHeight: '1.6',
     opacity: 0.8,
-  };
-
-  const gridStyle: React.CSSProperties = {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))',
-    gap: '30px',
-    marginBottom: '60px',
   };
 
   const cardStyle: React.CSSProperties = {
@@ -187,37 +193,8 @@ const HomePage: FC = () => {
     fontWeight: '500',
   };
 
-  const statsStyle: React.CSSProperties = {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
-    gap: '20px',
-    backgroundColor: '#f8f9fa',
-    padding: '40px',
-    borderRadius: '12px',
-    textAlign: 'center',
-  };
-
-  const statStyle: React.CSSProperties = {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-  };
-
-  const statNumberStyle: React.CSSProperties = {
-    fontSize: '36px',
-    fontWeight: 'bold',
-    color: '#1976d2',
-    marginBottom: '10px',
-  };
-
-  const statLabelStyle: React.CSSProperties = {
-    fontSize: '14px',
-    color: '#666',
-    fontWeight: '500',
-  };
-
   return (
-    <div style={containerStyle}>
+    <div style={styles.page.container}>
       {/* Hero Section */}
       <div style={heroStyle}>
         <h1 style={titleStyle}>React Google Maps POC</h1>
@@ -232,7 +209,7 @@ const HomePage: FC = () => {
       </div>
 
       {/* Features Grid */}
-      <div style={gridStyle}>
+      <div style={styles.cards.autoFit}>
         {features.map((feature) => (
           <Link
             key={feature.id}
@@ -265,22 +242,22 @@ const HomePage: FC = () => {
       </div>
 
       {/* Stats Section */}
-      <div style={statsStyle}>
-        <div style={statStyle}>
-          <div style={statNumberStyle}>7</div>
-          <div style={statLabelStyle}>Interactive Examples</div>
+      <div style={styles.stats.container}>
+        <div style={styles.stats.card}>
+          <div style={styles.stats.value}>9</div>
+          <div style={styles.stats.label}>Interactive Examples</div>
         </div>
-        <div style={statStyle}>
-          <div style={statNumberStyle}>100%</div>
-          <div style={statLabelStyle}>TypeScript Coverage</div>
+        <div style={styles.stats.card}>
+          <div style={styles.stats.value}>100%</div>
+          <div style={styles.stats.label}>TypeScript Coverage</div>
         </div>
-        <div style={statStyle}>
-          <div style={statNumberStyle}>15+</div>
-          <div style={statLabelStyle}>Google Maps Features</div>
+        <div style={styles.stats.card}>
+          <div style={styles.stats.value}>20+</div>
+          <div style={styles.stats.label}>Google Maps Features</div>
         </div>
-        <div style={statStyle}>
-          <div style={statNumberStyle}>∞</div>
-          <div style={statLabelStyle}>Learning Opportunities</div>
+        <div style={styles.stats.card}>
+          <div style={styles.stats.value}>∞</div>
+          <div style={styles.stats.label}>Learning Opportunities</div>
         </div>
       </div>
     </div>

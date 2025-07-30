@@ -1,17 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import { LoadScript, GoogleMap, Marker } from '@react-google-maps/api';
+import { Marker } from '@react-google-maps/api';
 import { Button, Card, InfoBox } from '../components/ui';
+import { PageLayout, PageSection } from '../components/layout';
+import { MapContainer } from '../components/maps';
+import { styles } from '../styles/pageStyles';
 import { EntryPoint, Checkpoint, Vehicle, EntryPointType } from '../types/logistics/TripTypes';
 import { logisticsApi } from '../services/LogisticsApiService';
 import { LatLng } from '../types/common/LatLng';
-
-const containerStyle = {
-  width: '100%',
-  height: '600px',
-};
-
-// Saudi Arabia map center
-const saudiArabiaCenter: LatLng = { lat: 24.7136, lng: 46.6753 };
+import { 
+  SAUDI_ARABIA_LOCATIONS, 
+  PAGE_CONTENT, 
+  UI_LABELS, 
+  ERROR_MESSAGES,
+  MARKER_ICONS 
+} from '../constants';
 
 /**
  * Entry Points Page
@@ -52,7 +54,7 @@ const EntryPointsPage: React.FC = () => {
       setCheckpoints(checkpointsData);
       setVehicles(vehiclesData);
     } catch (err) {
-      setError('Failed to load data');
+      setError(ERROR_MESSAGES.loadingFailed);
       console.error('Error loading data:', err);
     } finally {
       setLoading(false);
@@ -62,18 +64,18 @@ const EntryPointsPage: React.FC = () => {
   const getEntryPointIcon = (type: EntryPointType): string => {
     switch (type) {
       case EntryPointType.AIRPORT:
-        return 'https://maps.google.com/mapfiles/ms/icons/airports.png';
+        return MARKER_ICONS.airport;
       case EntryPointType.SEAPORT:
-        return 'https://maps.google.com/mapfiles/ms/icons/marina.png';
+        return MARKER_ICONS.seaport;
       case EntryPointType.LAND_BORDER:
-        return 'https://maps.google.com/mapfiles/ms/icons/flag.png';
+        return MARKER_ICONS.border;
       default:
-        return 'https://maps.google.com/mapfiles/ms/icons/blue-dot.png';
+        return MARKER_ICONS.blue;
     }
   };
 
   const getVehicleIcon = (vehicleType: string): string => {
-    return 'https://maps.google.com/mapfiles/ms/icons/truck.png';
+    return MARKER_ICONS.truck;
   };
 
   const filteredEntryPoints = entryPoints.filter(point => {
@@ -115,223 +117,223 @@ const EntryPointsPage: React.FC = () => {
 
   if (loading) {
     return (
-      <div style={{ padding: '20px', textAlign: 'center' }}>
+      <PageLayout title={PAGE_CONTENT.entryPoints.title}>
         <InfoBox variant="info">
-          <strong>Loading...</strong> Loading entry points and checkpoints data
+          <strong>{UI_LABELS.loading}</strong> Loading entry points and checkpoints data
         </InfoBox>
-      </div>
+      </PageLayout>
     );
   }
 
   if (error) {
     return (
-      <div style={{ padding: '20px' }}>
+      <PageLayout title={PAGE_CONTENT.entryPoints.title}>
         <InfoBox variant="error">
-          <strong>Error:</strong> {error}
+          <strong>{UI_LABELS.error}:</strong> {error}
           <Button onClick={loadData} style={{ marginLeft: '10px' }}>
-            Retry
+            {UI_LABELS.retry}
           </Button>
         </InfoBox>
-      </div>
+      </PageLayout>
     );
   }
 
   return (
-    <div style={{ padding: '20px' }}>
-      <h1>Entry Points & Checkpoints</h1>
-      <p>View airports, seaports, land borders and checkpoints in Saudi Arabia</p>
-
+    <PageLayout
+      title={PAGE_CONTENT.entryPoints.title}
+      subtitle={PAGE_CONTENT.entryPoints.subtitle}
+    >
       {/* Control Panel */}
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px', marginBottom: '20px' }}>
-        <Card>
-          <h3>Display Filters</h3>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-            <label style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <input
-                type="checkbox"
-                checked={showAirports}
-                onChange={(e) => setShowAirports(e.target.checked)}
-              />
-              Airports ({entryPoints.filter(p => p.type === EntryPointType.AIRPORT).length})
-            </label>
-            <label style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <input
-                type="checkbox"
-                checked={showSeaports}
-                onChange={(e) => setShowSeaports(e.target.checked)}
-              />
-              Seaports ({entryPoints.filter(p => p.type === EntryPointType.SEAPORT).length})
-            </label>
-            <label style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <input
-                type="checkbox"
-                checked={showBorders}
-                onChange={(e) => setShowBorders(e.target.checked)}
-              />
-              Land Borders ({entryPoints.filter(p => p.type === EntryPointType.LAND_BORDER).length})
-            </label>
-            <label style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <input
-                type="checkbox"
-                checked={showCheckpoints}
-                onChange={(e) => setShowCheckpoints(e.target.checked)}
-              />
-              Checkpoints ({checkpoints.length})
-            </label>
-            <label style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <input
-                type="checkbox"
-                checked={showVehicles}
-                onChange={(e) => setShowVehicles(e.target.checked)}
-              />
-              Vehicles ({vehicles.length})
-            </label>
-          </div>
-        </Card>
-
-        <Card>
-          <h3>Selected Point Information</h3>
-          {selectedPoint ? (
-            <div style={{ fontSize: '14px' }}>
-              <p><strong>Name:</strong> {selectedPoint.name}</p>
-              <p><strong>Type:</strong> {getTypeLabel(selectedPoint.type)}</p>
-              <p><strong>Status:</strong> {selectedPoint.isActive ? 'Active' : 'Inactive'}</p>
-              <p><strong>Operating Hours:</strong> {selectedPoint.operatingHours.open} - {selectedPoint.operatingHours.close}</p>
-              <div style={{ marginTop: '10px' }}>
-                <p><strong>Current Load:</strong></p>
-                <div style={{ 
-                  width: '100%', 
-                  height: '20px', 
-                  backgroundColor: '#f0f0f0', 
-                  borderRadius: '10px',
-                  overflow: 'hidden',
-                  marginTop: '5px'
-                }}>
-                  <div style={{
-                    width: `${getCapacityStatus(selectedPoint.currentLoad, selectedPoint.capacity).percentage}%`,
-                    height: '100%',
-                    backgroundColor: getCapacityStatus(selectedPoint.currentLoad, selectedPoint.capacity).color,
-                    transition: 'width 0.3s ease'
-                  }} />
-                </div>
-                <p style={{ fontSize: '12px', marginTop: '5px' }}>
-                  {selectedPoint.currentLoad} / {selectedPoint.capacity} 
-                  ({getCapacityStatus(selectedPoint.currentLoad, selectedPoint.capacity).percentage.toFixed(1)}%)
-                </p>
-              </div>
+      <PageSection>
+        <div style={styles.cards.twoColumn}>
+          <Card title="Display Filters" padding="lg">
+            <div style={styles.forms.container}>
+              <label style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <input
+                  type="checkbox"
+                  checked={showAirports}
+                  onChange={(e) => setShowAirports(e.target.checked)}
+                />
+                Airports ({entryPoints.filter(p => p.type === EntryPointType.AIRPORT).length})
+              </label>
+              <label style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <input
+                  type="checkbox"
+                  checked={showSeaports}
+                  onChange={(e) => setShowSeaports(e.target.checked)}
+                />
+                Seaports ({entryPoints.filter(p => p.type === EntryPointType.SEAPORT).length})
+              </label>
+              <label style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <input
+                  type="checkbox"
+                  checked={showBorders}
+                  onChange={(e) => setShowBorders(e.target.checked)}
+                />
+                Land Borders ({entryPoints.filter(p => p.type === EntryPointType.LAND_BORDER).length})
+              </label>
+              <label style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <input
+                  type="checkbox"
+                  checked={showCheckpoints}
+                  onChange={(e) => setShowCheckpoints(e.target.checked)}
+                />
+                Checkpoints ({checkpoints.length})
+              </label>
+              <label style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <input
+                  type="checkbox"
+                  checked={showVehicles}
+                  onChange={(e) => setShowVehicles(e.target.checked)}
+                />
+                Vehicles ({vehicles.length})
+              </label>
             </div>
-          ) : (
-            <p style={{ color: '#666', fontStyle: 'italic' }}>
-              Click on a point on the map to view details
-            </p>
-          )}
-        </Card>
-      </div>
+          </Card>
 
-      {/* Map */}
-      <div style={{ height: '600px', marginBottom: '30px', border: '1px solid #ddd', borderRadius: '8px' }}>
-        <LoadScript googleMapsApiKey={process.env.REACT_APP_GOOGLE_MAPS_API_KEY || ""}>
-          <GoogleMap
-            mapContainerStyle={containerStyle}
-            center={saudiArabiaCenter}
-            zoom={6}
-          >
-            {/* Entry Points */}
-            {filteredEntryPoints.map((point) => (
-              <Marker
-                key={point.id}
-                position={point.location}
-                title={`${point.name} (${point.nameAr})`}
-                icon={{
-                  url: getEntryPointIcon(point.type),
-                  scaledSize: typeof google !== 'undefined' ? new google.maps.Size(32, 32) : undefined
-                }}
-                onClick={() => setSelectedPoint(point)}
-              />
-            ))}
+          <Card title="Selected Point Information" padding="lg">
+            {selectedPoint ? (
+              <div style={{ fontSize: '14px' }}>
+                <p><strong>Name:</strong> {selectedPoint.name}</p>
+                <p><strong>Type:</strong> {getTypeLabel(selectedPoint.type)}</p>
+                <p><strong>Status:</strong> {selectedPoint.isActive ? UI_LABELS.active : UI_LABELS.inactive}</p>
+                <p><strong>Operating Hours:</strong> {selectedPoint.operatingHours.open} - {selectedPoint.operatingHours.close}</p>
+                <div style={{ marginTop: '10px' }}>
+                  <p><strong>Current Load:</strong></p>
+                  <div style={{ 
+                    width: '100%', 
+                    height: '20px', 
+                    backgroundColor: '#f0f0f0', 
+                    borderRadius: '10px',
+                    overflow: 'hidden',
+                    marginTop: '5px'
+                  }}>
+                    <div style={{
+                      width: `${getCapacityStatus(selectedPoint.currentLoad, selectedPoint.capacity).percentage}%`,
+                      height: '100%',
+                      backgroundColor: getCapacityStatus(selectedPoint.currentLoad, selectedPoint.capacity).color,
+                      transition: 'width 0.3s ease'
+                    }} />
+                  </div>
+                  <p style={{ fontSize: '12px', marginTop: '5px' }}>
+                    {selectedPoint.currentLoad} / {selectedPoint.capacity} 
+                    ({getCapacityStatus(selectedPoint.currentLoad, selectedPoint.capacity).percentage.toFixed(1)}%)
+                  </p>
+                </div>
+              </div>
+            ) : (
+              <p style={{ color: '#666', fontStyle: 'italic' }}>
+                Click on a point on the map to view details
+              </p>
+            )}
+          </Card>
+        </div>
+      </PageSection>
 
-            {/* Checkpoints */}
-            {showCheckpoints && checkpoints.map((checkpoint) => (
-              <Marker
-                key={checkpoint.id}
-                position={checkpoint.location}
-                title={`${checkpoint.name} - Avg Wait: ${checkpoint.averageWaitTime} min`}
-                icon={{
-                  url: 'https://maps.google.com/mapfiles/ms/icons/caution.png',
-                  scaledSize: typeof google !== 'undefined' ? new google.maps.Size(24, 24) : undefined
-                }}
-              />
-            ))}
+      {/* Map Section */}
+      <PageSection title="🗺️ Entry Points and Checkpoints Map">
+        <MapContainer
+          center={SAUDI_ARABIA_LOCATIONS.center}
+          zoom={6}
+          height="large"
+        >
+          {/* Entry Points */}
+          {filteredEntryPoints.map((point) => (
+            <Marker
+              key={point.id}
+              position={point.location}
+              title={`${point.name} (${point.nameAr})`}
+              icon={{
+                url: getEntryPointIcon(point.type),
+                scaledSize: typeof google !== 'undefined' ? new google.maps.Size(32, 32) : undefined
+              }}
+              onClick={() => setSelectedPoint(point)}
+            />
+          ))}
 
-            {/* Vehicles */}
-            {showVehicles && vehicles.map((vehicle) => (
-              <Marker
-                key={vehicle.id}
-                position={vehicle.currentLocation}
-                title={`${vehicle.plateNumber} - ${vehicle.type} - Speed: ${vehicle.speed} km/h`}
-                icon={{
-                  url: getVehicleIcon(vehicle.type),
-                  scaledSize: typeof google !== 'undefined' ? new google.maps.Size(28, 28) : undefined
-                }}
-              />
-            ))}
-          </GoogleMap>
-        </LoadScript>
-      </div>
+          {/* Checkpoints */}
+          {showCheckpoints && checkpoints.map((checkpoint) => (
+            <Marker
+              key={checkpoint.id}
+              position={checkpoint.location}
+              title={`${checkpoint.name} - Avg Wait: ${checkpoint.averageWaitTime} min`}
+              icon={{
+                url: MARKER_ICONS.checkpoint,
+                scaledSize: typeof google !== 'undefined' ? new google.maps.Size(24, 24) : undefined
+              }}
+            />
+          ))}
+
+          {/* Vehicles */}
+          {showVehicles && vehicles.map((vehicle) => (
+            <Marker
+              key={vehicle.id}
+              position={vehicle.currentLocation}
+              title={`${vehicle.plateNumber} - ${vehicle.type} - Speed: ${vehicle.speed} km/h`}
+              icon={{
+                url: getVehicleIcon(vehicle.type),
+                scaledSize: typeof google !== 'undefined' ? new google.maps.Size(28, 28) : undefined
+              }}
+            />
+          ))}
+        </MapContainer>
+      </PageSection>
 
       {/* Quick Statistics */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '15px' }}>
-        <Card>
-          <h4 style={{ margin: '0 0 10px 0', color: '#1976d2' }}>Airports</h4>
-          <p style={{ fontSize: '24px', fontWeight: 'bold', margin: '0', color: '#1976d2' }}>
-            {entryPoints.filter(p => p.type === EntryPointType.AIRPORT).length}
-          </p>
-          <p style={{ fontSize: '12px', color: '#666', margin: '5px 0 0 0' }}>
-            Active: {entryPoints.filter(p => p.type === EntryPointType.AIRPORT && p.isActive).length}
-          </p>
-        </Card>
+      <PageSection title="📊 Quick Statistics" marginBottom={false}>
+        <div style={styles.stats.container}>
+          <Card style={styles.stats.card}>
+            <div style={{ ...styles.stats.value, color: '#1976d2' }}>
+              {entryPoints.filter(p => p.type === EntryPointType.AIRPORT).length}
+            </div>
+            <div style={styles.stats.label}>Airports</div>
+            <p style={{ fontSize: '12px', color: '#666', margin: '5px 0 0 0' }}>
+              Active: {entryPoints.filter(p => p.type === EntryPointType.AIRPORT && p.isActive).length}
+            </p>
+          </Card>
 
-        <Card>
-          <h4 style={{ margin: '0 0 10px 0', color: '#4CAF50' }}>Seaports</h4>
-          <p style={{ fontSize: '24px', fontWeight: 'bold', margin: '0', color: '#4CAF50' }}>
-            {entryPoints.filter(p => p.type === EntryPointType.SEAPORT).length}
-          </p>
-          <p style={{ fontSize: '12px', color: '#666', margin: '5px 0 0 0' }}>
-            Active: {entryPoints.filter(p => p.type === EntryPointType.SEAPORT && p.isActive).length}
-          </p>
-        </Card>
+          <Card style={styles.stats.card}>
+            <div style={{ ...styles.stats.value, color: '#4CAF50' }}>
+              {entryPoints.filter(p => p.type === EntryPointType.SEAPORT).length}
+            </div>
+            <div style={styles.stats.label}>Seaports</div>
+            <p style={{ fontSize: '12px', color: '#666', margin: '5px 0 0 0' }}>
+              Active: {entryPoints.filter(p => p.type === EntryPointType.SEAPORT && p.isActive).length}
+            </p>
+          </Card>
 
-        <Card>
-          <h4 style={{ margin: '0 0 10px 0', color: '#FF9800' }}>Land Borders</h4>
-          <p style={{ fontSize: '24px', fontWeight: 'bold', margin: '0', color: '#FF9800' }}>
-            {entryPoints.filter(p => p.type === EntryPointType.LAND_BORDER).length}
-          </p>
-          <p style={{ fontSize: '12px', color: '#666', margin: '5px 0 0 0' }}>
-            Active: {entryPoints.filter(p => p.type === EntryPointType.LAND_BORDER && p.isActive).length}
-          </p>
-        </Card>
+          <Card style={styles.stats.card}>
+            <div style={{ ...styles.stats.value, color: '#FF9800' }}>
+              {entryPoints.filter(p => p.type === EntryPointType.LAND_BORDER).length}
+            </div>
+            <div style={styles.stats.label}>Land Borders</div>
+            <p style={{ fontSize: '12px', color: '#666', margin: '5px 0 0 0' }}>
+              Active: {entryPoints.filter(p => p.type === EntryPointType.LAND_BORDER && p.isActive).length}
+            </p>
+          </Card>
 
-        <Card>
-          <h4 style={{ margin: '0 0 10px 0', color: '#9C27B0' }}>Checkpoints</h4>
-          <p style={{ fontSize: '24px', fontWeight: 'bold', margin: '0', color: '#9C27B0' }}>
-            {checkpoints.length}
-          </p>
-          <p style={{ fontSize: '12px', color: '#666', margin: '5px 0 0 0' }}>
-            Active: {checkpoints.filter(c => c.isActive).length}
-          </p>
-        </Card>
+          <Card style={styles.stats.card}>
+            <div style={{ ...styles.stats.value, color: '#9C27B0' }}>
+              {checkpoints.length}
+            </div>
+            <div style={styles.stats.label}>Checkpoints</div>
+            <p style={{ fontSize: '12px', color: '#666', margin: '5px 0 0 0' }}>
+              Active: {checkpoints.filter(c => c.isActive).length}
+            </p>
+          </Card>
 
-        <Card>
-          <h4 style={{ margin: '0 0 10px 0', color: '#F44336' }}>Active Vehicles</h4>
-          <p style={{ fontSize: '24px', fontWeight: 'bold', margin: '0', color: '#F44336' }}>
-            {vehicles.filter(v => v.sensorData.engineStatus === 'ON').length}
-          </p>
-          <p style={{ fontSize: '12px', color: '#666', margin: '5px 0 0 0' }}>
-            Total: {vehicles.length}
-          </p>
-        </Card>
-      </div>
-    </div>
+          <Card style={styles.stats.card}>
+            <div style={{ ...styles.stats.value, color: '#F44336' }}>
+              {vehicles.filter(v => v.sensorData.engineStatus === 'ON').length}
+            </div>
+            <div style={styles.stats.label}>Active Vehicles</div>
+            <p style={{ fontSize: '12px', color: '#666', margin: '5px 0 0 0' }}>
+              Total: {vehicles.length}
+            </p>
+          </Card>
+        </div>
+      </PageSection>
+    </PageLayout>
   );
 };
 

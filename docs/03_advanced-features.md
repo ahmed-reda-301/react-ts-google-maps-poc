@@ -322,12 +322,12 @@ const customMarkers: MarkerWithInfoProps[] = [
     category: 'restaurant',
     customIcon: '/icons/restaurant.png',
     infoWindow: {
-      title: 'مطعم النخيل',
-      description: 'مطعم تقليدي يقدم أشهى الأطباق السعودية',
+      title: 'Al Nakhl Restaurant',
+      description: 'Traditional restaurant serving the finest Saudi dishes',
       image: '/images/restaurant.jpg',
       actions: [
-        { label: 'عرض القائمة', onClick: () => showMenu(), type: 'primary' },
-        { label: 'الاتجاهات', onClick: () => getDirections(), type: 'secondary' }
+        { label: 'View Menu', onClick: () => showMenu(), type: 'primary' },
+        { label: 'Get Directions', onClick: () => getDirections(), type: 'secondary' }
       ]
     }
   }
@@ -370,7 +370,7 @@ const areaData: AreaPolygonProps = {
   ],
   category: 'zone',
   areaInfo: {
-    name: 'منطقة الملز',
+    name: 'Al Malaz District',
     type: 'residential',
     area: 2500000, // square meters
     perimeter: 6000 // meters

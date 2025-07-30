@@ -1,262 +1,262 @@
-# نظام اللوجستيات - نظرة شاملة
+# Logistics System - Comprehensive Overview
 
-## مقدمة
+## Introduction
 
-تم تطوير نظام اللوجستيات كجزء من مشروع React Google Maps POC لتوفير حل شامل لإدارة ومتابعة الرحلات والشاحنات في المملكة العربية السعودية. يهدف النظام إلى محاكاة بيئة حقيقية لإدارة الأساطيل والرحلات التجارية.
+The logistics system was developed as part of the React Google Maps POC project to provide a comprehensive solution for managing and tracking trips and trucks in Saudi Arabia. The system aims to simulate a real environment for fleet and commercial trip management.
 
-## الهدف من النظام
+## System Objectives
 
-### الأهداف التعليمية
-- **تعلم تقنيات الخرائط المتقدمة**: استخدام Google Maps API بطرق معقدة
-- **إدارة البيانات المعقدة**: التعامل مع هياكل بيانات متعددة الطبقات
-- **التطبيقات الحقيقية**: محاكاة سيناريوهات عملية في اللوجستيات
-- **أفضل الممارسات**: تطبيق معايير التطوير ال��ديثة
+### Educational Objectives
+- **Learn Advanced Map Techniques**: Using Google Maps API in complex ways
+- **Complex Data Management**: Handling multi-layered data structures
+- **Real-world Applications**: Simulating practical logistics scenarios
+- **Best Practices**: Applying modern development standards
 
-### الأهداف العملية
-- **مراقبة الرحلات**: تتبع الشاحنات والرحلات في الوقت الفعلي
-- **إدارة نقاط ال��خول**: مراقبة المطارات والموانئ والمعابر
-- **الامتثال للقوانين**: ضمان الالتزام بالسرعة والمسارات المحددة
-- **تحسين العمليات**: تحليل الأداء وتحسين الكفاءة
+### Practical Objectives
+- **Trip Monitoring**: Real-time tracking of trucks and trips
+- **Entry Point Management**: Monitoring airports, ports, and border crossings
+- **Regulatory Compliance**: Ensuring adherence to speed limits and designated routes
+- **Operations Optimization**: Performance analysis and efficiency improvement
 
-## مكونات النظام
+## System Components
 
-### 1. الأنواع والواجهات (Types & Interfaces)
+### 1. Types & Interfaces
 
-#### أنواع المركبات
+#### Vehicle Types
 ```typescript
 enum VehicleType {
-  TRUCK = 'شاحنة عادية',
-  CONTAINER_TRUCK = 'شاحنة حاويات',
-  TANKER = 'صهريج',
-  REFRIGERATED = 'شاحنة مبردة',
-  FLATBED = 'شاحنة مسطحة',
-  HEAVY_EQUIPMENT = 'معدات ثقيلة'
+  TRUCK = 'Regular Truck',
+  CONTAINER_TRUCK = 'Container Truck',
+  TANKER = 'Tanker',
+  REFRIGERATED = 'Refrigerated Truck',
+  FLATBED = 'Flatbed Truck',
+  HEAVY_EQUIPMENT = 'Heavy Equipment'
 }
 ```
 
-#### حالات الرحلة
+#### Trip Status
 ```typescript
 enum TripStatus {
-  PLANNED = 'مخططة',
-  IN_PROGRESS = 'قيد التنفيذ',
-  COMPLETED = 'مكتملة',
-  DELAYED = 'متأخرة',
-  CANCELLED = 'ملغية',
-  EMERGENCY = 'طوارئ'
+  PLANNED = 'Planned',
+  IN_PROGRESS = 'In Progress',
+  COMPLETED = 'Completed',
+  DELAYED = 'Delayed',
+  CANCELLED = 'Cancelled',
+  EMERGENCY = 'Emergency'
 }
 ```
 
-#### أنواع نقاط الدخول
+#### Entry Point Types
 ```typescript
 enum EntryPointType {
-  AIRPORT = 'مطار',
-  SEAPORT = 'ميناء',
-  LAND_BORDER = 'معبر حدودي',
-  CHECKPOINT = 'نقطة تفتيش'
+  AIRPORT = 'Airport',
+  SEAPORT = 'Seaport',
+  LAND_BORDER = 'Land Border',
+  CHECKPOINT = 'Checkpoint'
 }
 ```
 
-### 2. خدمة API المحاكاة (LogisticsApiService)
+### 2. Mock API Service (LogisticsApiService)
 
-#### الميزات الرئيسية
-- **Singleton Pattern**: ضمان وجود instance واحد فقط
-- **محاكاة التأخير**: تقليد سلوك الشبكة الحقيقية
-- **بيانات واقعية**: استخدام مواقع حقيقية في السعودية
-- **إدارة الحالة**: تحديث البيانات بشكل ديناميكي
+#### Key Features
+- **Singleton Pattern**: Ensuring only one instance exists
+- **Delay Simulation**: Mimicking real network behavior
+- **Realistic Data**: Using actual locations in Saudi Arabia
+- **State Management**: Dynamic data updates
 
-#### البيانات المحاكاة
-- **12 نقطة دخول وخروج**: مطارات، موانئ، معابر حدودية
-- **4 نقاط تفتيش**: موزعة على الطرق الرئيسية
-- **3 سائقين**: بمعلومات كاملة وتقييمات
-- **2 مركبة**: بأنواع مختلفة وبيانات استشعار
-- **2 رحلة**: واحدة نشطة وأخرى مخططة
+#### Mock Data
+- **12 Entry/Exit Points**: Airports, ports, border crossings
+- **4 Checkpoints**: Distributed on main roads
+- **3 Drivers**: With complete information and ratings
+- **2 Vehicles**: With different types and sensor data
+- **2 Trips**: One active and one planned
 
-### 3. الصفحات التفاعلية
+### 3. Interactive Pages
 
-#### صفحة نقاط الدخول والخروج
-- **الهدف**: عرض جميع نقاط الدخول والخروج والمراقبة
-- **الميزات**: فلترة، إحصائيات، معلومات تفصيلية
-- **التعلم**: إدارة أنواع مختلفة من البيانات على الخريطة
+#### Entry and Exit Points Page
+- **Purpose**: Display all entry/exit points and monitoring
+- **Features**: Filtering, statistics, detailed information
+- **Learning**: Managing different types of data on the map
 
-#### صفحة متابعة الرحلات
-- **الهدف**: تتبع الرحلات ومقارنة المخطط مع الفعلي
-- **الميزات**: تحديث فوري، مراقبة الامتثال، تحليل التقدم
-- **التعلم**: التعامل مع البيانات المتغيرة في الوقت الفعلي
+#### Trip Tracking Page
+- **Purpose**: Track trips and compare planned vs actual
+- **Features**: Real-time updates, compliance monitoring, progress analysis
+- **Learning**: Handling real-time changing data
 
-## البيانات الجغرافية
+## Geographic Data
 
-### المطارات الرئيسية
-1. **مطار الملك خالد الدولي** - الرياض
-   - الإحداثيات: 24.9576°N, 46.6988°E
-   - الطاقة: 100 مركبة
-   - ساعات العمل: 24/7
+### Major Airports
+1. **King Khalid International Airport** - Riyadh
+   - Coordinates: 24.9576°N, 46.6988°E
+   - Capacity: 100 vehicles
+   - Operating Hours: 24/7
 
-2. **مطار الملك عبدالعزيز الدولي** - جدة
-   - الإحداثيات: 21.6796°N, 39.1564°E
-   - الطاقة: 120 مركبة
-   - ساعات العمل: 24/7
+2. **King Abdulaziz International Airport** - Jeddah
+   - Coordinates: 21.6796°N, 39.1564°E
+   - Capacity: 120 vehicles
+   - Operating Hours: 24/7
 
-3. **مطار الملك فهد الدولي** - الدمام
-   - الإحداثيات: 26.4712°N, 49.7979°E
-   - الطاقة: 80 مركبة
-   - ساعات العمل: 24/7
+3. **King Fahd International Airport** - Dammam
+   - Coordinates: 26.4712°N, 49.7979°E
+   - Capacity: 80 vehicles
+   - Operating Hours: 24/7
 
-### الموانئ الرئيسية
-1. **ميناء جدة الإسلامي**
-   - الإحداثيات: 21.4858°N, 39.1925°E
-   - الطاقة: 200 مركبة
-   - ساعات العمل: 06:00 - 22:00
+### Major Ports
+1. **Jeddah Islamic Port**
+   - Coordinates: 21.4858°N, 39.1925°E
+   - Capacity: 200 vehicles
+   - Operating Hours: 06:00 - 22:00
 
-2. **ميناء الملك عبدالعزيز** - الدمام
-   - الإحداثيات: 26.3927°N, 50.1063°E
-   - الطاقة: 180 مركبة
-   - ساعات العمل: 06:00 - 22:00
+2. **King Abdulaziz Port** - Dammam
+   - Coordinates: 26.3927°N, 50.1063°E
+   - Capacity: 180 vehicles
+   - Operating Hours: 06:00 - 22:00
 
-3. **ميناء ينبع التجاري**
-   - الإحداثيات: 24.0889°N, 38.0617°E
-   - الطاقة: 150 مركبة
-   - ساعات العمل: 06:00 - 22:00
+3. **Yanbu Commercial Port**
+   - Coordinates: 24.0889°N, 38.0617°E
+   - Capacity: 150 vehicles
+   - Operating Hours: 06:00 - 22:00
 
-### المعابر الحدودية
-1. **منفذ الحديثة الحدودي** (العراق)
-   - الإحداثيات: 32.4056°N, 41.9981°E
-   - الطاق��: 50 مركبة
+### Border Crossings
+1. **Al Haditha Border Crossing** (Iraq)
+   - Coordinates: 32.4056°N, 41.9981°E
+   - Capacity: 50 vehicles
 
-2. **منفذ جديدة عرعر الحدودي** (العراق)
-   - الإحداثيات: 30.9756°N, 41.0378°E
-   - الطاقة: 60 مركبة
+2. **Jadeedah Arar Border Crossing** (Iraq)
+   - Coordinates: 30.9756°N, 41.0378°E
+   - Capacity: 60 vehicles
 
-3. **منفذ سلوى الحدودي** (قطر)
-   - الإحداثيات: 24.1392°N, 51.0136°E
-   - الطاقة: 40 مركبة
+3. **Salwa Border Crossing** (Qatar)
+   - Coordinates: 24.1392°N, 51.0136°E
+   - Capacity: 40 vehicles
 
-## نظام المراقبة والامتثال
+## Monitoring and Compliance System
 
-### مراقبة السرعة
-- **السرعة القصوى**: 80 كم/ساعة على الطرق الرئيسية
-- **التنبيهات**: تنبيه فوري عند تجاوز السرعة
-- **التسجيل**: حفظ جميع مخالفات السرعة
+### Speed Monitoring
+- **Speed Limit**: 80 km/h on main roads
+- **Alerts**: Immediate alert when speed limit is exceeded
+- **Logging**: Recording all speed violations
 
-### مراقبة المسار
-- **المسار المحدد**: مسار إجباري لكل رحلة
-- **كشف الانحراف**: تنبيه عند الخروج عن المسار
-- **المسار البديل**: اقتراح مسارات بديلة عند الحاجة
+### Route Monitoring
+- **Designated Route**: Mandatory route for each trip
+- **Deviation Detection**: Alert when deviating from route
+- **Alternative Routes**: Suggesting alternative routes when needed
 
-### مراقبة الأقفال
-- **حالة القفل**: مراقبة مستمرة لحالة أقفال الشاحنة
-- **التنبيهات الأمنية**: تنبيه فوري عند فتح القفل غير المصرح
-- **السجل الأمني**: تسجيل جميع عمليات فتح/إغلاق الأقفال
+### Lock Monitoring
+- **Lock Status**: Continuous monitoring of truck lock status
+- **Security Alerts**: Immediate alert for unauthorized lock opening
+- **Security Log**: Recording all lock/unlock operations
 
-## أجهزة الاستشعار والمراقبة
+## Sensors and Monitoring
 
-### بيانات المركبة
+### Vehicle Data
 ```typescript
 interface SensorData {
-  temperature?: number;      // درجة الحرارة (للشاحنات المبردة)
-  humidity?: number;         // الرطوبة
-  doorStatus: 'OPEN' | 'CLOSED';  // حالة الباب
-  engineStatus: 'ON' | 'OFF';     // حالة المحرك
-  fuelLevel: number;         // مستوى الوقود (نسبة مئوية)
+  temperature?: number;      // Temperature (for refrigerated trucks)
+  humidity?: number;         // Humidity
+  doorStatus: 'OPEN' | 'CLOSED';  // Door status
+  engineStatus: 'ON' | 'OFF';     // Engine status
+  fuelLevel: number;         // Fuel level (percentage)
 }
 ```
 
-### معلومات الموقع
-- **GPS دقيق**: تحديد الموقع بدقة عالية
-- **الاتجاه**: اتجاه حركة المركبة بالدرجات
-- **السرعة**: السرعة الحالية بالكيلومتر/ساعة
-- **التحديث**: تحديث الموقع كل 30 ثانية
+### Location Information
+- **Accurate GPS**: High-precision location determination
+- **Direction**: Vehicle movement direction in degrees
+- **Speed**: Current speed in km/h
+- **Updates**: Location update every 30 seconds
 
-## التقارير والإحصائيات
+## Reports and Statistics
 
-### إحصائيات النظام
+### System Statistics
 ```typescript
 interface SystemStats {
-  totalTrips: number;           // إجمالي الرحلات
-  activeTrips: number;          // الرحلات النشطة
-  completedTrips: number;       // الرحلات المكتملة
-  delayedTrips: number;         // الرحلات المتأخرة
-  totalVehicles: number;        // إجمالي المركبات
-  activeVehicles: number;       // المركبات النشطة
-  totalAlerts: number;          // إجمالي التنبيهات
-  criticalAlerts: number;       // التنبيهات الحرجة
-  averageDeliveryTime: number;  // متوسط وقت التسليم
-  onTimeDeliveryRate: number;   // معدل التسليم في الوقت المحدد
+  totalTrips: number;           // Total trips
+  activeTrips: number;          // Active trips
+  completedTrips: number;       // Completed trips
+  delayedTrips: number;         // Delayed trips
+  totalVehicles: number;        // Total vehicles
+  activeVehicles: number;       // Active vehicles
+  totalAlerts: number;          // Total alerts
+  criticalAlerts: number;       // Critical alerts
+  averageDeliveryTime: number;  // Average delivery time
+  onTimeDeliveryRate: number;   // On-time delivery rate
 }
 ```
 
-### تقارير الأداء
-- **كفاءة الوقود**: استهلاك الوقود لكل رحلة
-- **الالتزام بالمواعيد**: نسبة الرحلات المكتملة في الوقت
-- **مخالفات السرعة**: عدد ونوع مخالفات السرعة
-- **انحرافات المسار**: تحليل أسباب الانحراف عن المسار
+### Performance Reports
+- **Fuel Efficiency**: Fuel consumption per trip
+- **Schedule Compliance**: Percentage of trips completed on time
+- **Speed Violations**: Number and type of speed violations
+- **Route Deviations**: Analysis of reasons for route deviation
 
-## التقنيات المستخدمة
+## Technologies Used
 
 ### Frontend
-- **React 19**: أحدث إصدار من React
-- **TypeScript**: للتحقق من الأنواع والأمان
-- **Google Maps API**: للخرائط والتفاعل الجغرافي
-- **React Router**: للتنقل بين الصفحات
+- **React 19**: Latest version of React
+- **TypeScript**: For type checking and safety
+- **Google Maps API**: For maps and geographic interaction
+- **React Router**: For navigation between pages
 
-### إدارة البيانات
-- **Custom Hooks**: لإدارة الحالة المعقدة
-- **API Service**: خدمة محاكاة API متقدمة
-- **Real-time Updates**: تحديثات فورية للبيانات
+### Data Management
+- **Custom Hooks**: For complex state management
+- **API Service**: Advanced API simulation service
+- **Real-time Updates**: Instant data updates
 
-### التصميم
-- **Responsive Design**: تصميم متجاوب لجميع الأجهزة
-- **Custom Components**: مكونات مخصصة قابلة لإعادة الاستخدام
-- **Interactive UI**: واجهة تفاعلية سهلة الاستخدام
+### Design
+- **Responsive Design**: Responsive design for all devices
+- **Custom Components**: Reusable custom components
+- **Interactive UI**: Easy-to-use interactive interface
 
-## حالات الاستخدام المتقدمة
+## Advanced Use Cases
 
-### 1. إدارة الطوارئ
-- **كشف الطوارئ**: تحديد حالات الطوارئ تلقائياً
-- **الاستجابة السريعة**: إجراءات فورية عند الطوارئ
-- **التنسيق**: تنسيق مع الجهات المختصة
+### 1. Emergency Management
+- **Emergency Detection**: Automatic emergency situation identification
+- **Rapid Response**: Immediate procedures during emergencies
+- **Coordination**: Coordination with relevant authorities
 
-### 2. تحسين المسارات
-- **تحليل البيانات**: تحليل بيانات الرحلات السابقة
-- **الذكاء الاصطناعي**: استخدام AI لتحسين المسارات
-- **التنبؤ**: توقع أفضل الأوقات والمسارات
+### 2. Route Optimization
+- **Data Analysis**: Analysis of previous trip data
+- **Artificial Intelligence**: Using AI to optimize routes
+- **Prediction**: Predicting best times and routes
 
-### 3. إدارة الأسطول
-- **صيانة المركبات**: جدولة الصيانة الدورية
-- **تحسين الاستخدام**: توزيع المركبات بكفاءة
-- **مراقبة الأداء**: تقييم أداء السائقين والمركبات
+### 3. Fleet Management
+- **Vehicle Maintenance**: Scheduling regular maintenance
+- **Usage Optimization**: Efficient vehicle distribution
+- **Performance Monitoring**: Evaluating driver and vehicle performance
 
-## الأمان والحماية
+## Security and Protection
 
-### حماية البيانات
-- **تشفير البيانات**: تشفير جميع البيانات الحساسة
-- **المصادقة**: نظام مصادقة متعدد المستويات
-- **الصلاحيات**: تحديد صلاحيات المستخدمين
+### Data Protection
+- **Data Encryption**: Encrypting all sensitive data
+- **Authentication**: Multi-level authentication system
+- **Permissions**: Defining user permissions
 
-### أمان المركبات
-- **مراقبة الأقفال**: مراقبة مستمرة لحالة الأقفال
-- **التنبيهات الأمنية**: تنبيهات فورية للمخالفات الأمنية
-- **التتبع المستمر**: تتبع المركبات 24/7
+### Vehicle Security
+- **Lock Monitoring**: Continuous monitoring of lock status
+- **Security Alerts**: Immediate alerts for security violations
+- **Continuous Tracking**: 24/7 vehicle tracking
 
-## التطوير المستقبلي
+## Future Development
 
-### المرحلة القادمة
-1. **صفحة إدارة السائقين**: إدارة معلومات وأداء السائقين
-2. **صفحة تحليل البيانات**: تحليل متقدم للبيانات والإحصائيات
-3. **صفحة التنبيهات**: إدارة وتصنيف التنبيهات
-4. **صفحة التقارير**: تقارير مفصلة وقابلة للتخصيص
+### Next Phase
+1. **Driver Management Page**: Managing driver information and performance
+2. **Data Analysis Page**: Advanced data analysis and statistics
+3. **Alerts Page**: Alert management and classification
+4. **Reports Page**: Detailed and customizable reports
 
-### التحسينات التقنية
-- **قاعدة بيانات حقيقية**: ربط بقاعدة بيانات فعلية
-- **API حقيقي**: تطوير API backend كامل
-- **تطبيق محمول**: تطبيق للسائقين والعملاء
-- **لوحة تحكم متقدمة**: dashboard شامل للإدارة
+### Technical Improvements
+- **Real Database**: Connecting to an actual database
+- **Real API**: Developing a complete backend API
+- **Mobile Application**: App for drivers and customers
+- **Advanced Dashboard**: Comprehensive management dashboard
 
-## الخلاصة
+## Conclusion
 
-نظام اللوجستيات يوفر نموذجاً شاملاً ومتقدماً لفهم وتطبيق:
-- **تقنيات الخرائط المتقدمة**: استخدام Google Maps بطرق معقدة
-- **إدارة البيانات المعقدة**: التعامل مع أنواع مختلفة من البيانات
-- **التطبيقات الحقيقية**: محاكاة سيناريوهات عملية
-- **أفضل الممارسات**: تطبيق معايير التطوير الحديثة
+The logistics system provides a comprehensive and advanced model for understanding and implementing:
+- **Advanced Map Techniques**: Using Google Maps in complex ways
+- **Complex Data Management**: Handling different types of data
+- **Real-world Applications**: Simulating practical scenarios
+- **Best Practices**: Applying modern development standards
 
-هذا النظام يعتبر أساساً قو��اً لبناء تطبيقات اللوجستيات وإدارة الأساطيل المتقدمة، ويوفر فهماً عميقاً للتحديات والحلول في هذا المجال.
+This system serves as a strong foundation for building advanced logistics and fleet management applications, providing deep understanding of challenges and solutions in this field.
