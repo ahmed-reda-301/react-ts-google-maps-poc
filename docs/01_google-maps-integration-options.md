@@ -228,3 +228,4 @@ const MapComponent: React.FC = () => (
 - [Google Maps JavaScript API Documentation](https://developers.google.com/maps/documentation/javascript/overview)
 - [React Google Maps API Documentation](https://www.npmjs.com/package/@react-google-maps/api)
 - [OpenStreetMap Wiki](https://wiki.openstreetmap.org/)
+
