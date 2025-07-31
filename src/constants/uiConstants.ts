@@ -268,3 +268,111 @@ export const FEATURE_LISTS = {
     'Map Visualization: Display origin and destination markers',
   ],
 } as const;
+
+/**
+ * Component colors for interactive elements
+ */
+export const COMPONENT_COLORS = [
+  { name: 'Blue', value: '#007bff' },
+  { name: 'Green', value: '#28a745' },
+  { name: 'Yellow', value: '#ffc107' },
+  { name: 'Red', value: '#dc3545' },
+  { name: 'Purple', value: '#6f42c1' },
+  { name: 'Teal', value: '#20c997' },
+  { name: 'Orange', value: '#fd7e14' },
+  { name: 'Pink', value: '#e83e8c' }
+] as const;
+
+/**
+ * UI color scheme
+ */
+export const UI_COLORS = {
+  PRIMARY: '#1976d2',
+  SECONDARY: '#6c757d',
+  SUCCESS: '#28a745',
+  WARNING: '#ffc107',
+  DANGER: '#dc3545',
+  INFO: '#17a2b8',
+  LIGHT: '#f8f9fa',
+  DARK: '#343a40',
+  WHITE: '#ffffff',
+  BACKGROUND: '#f5f5f5',
+  
+  // Background colors
+  background: {
+    primary: '#ffffff',
+    secondary: '#f8f9fa',
+    dark: '#343a40',
+    light: '#e9ecef'
+  },
+  
+  // Text colors
+  text: {
+    primary: '#212529',
+    secondary: '#6c757d',
+    muted: '#868e96',
+    white: '#ffffff'
+  },
+  
+  // Border colors
+  border: {
+    light: '#dee2e6',
+    medium: '#ced4da',
+    dark: '#6c757d'
+  }
+} as const;
+
+/**
+ * Map element colors
+ */
+export const MAP_COLORS = {
+  marker: {
+    default: '#007bff',
+    selected: '#FFD700',
+    wifi: '#007bff',
+    delivery: '#28a745',
+    service: '#ffc107',
+    emergency: '#dc3545'
+  },
+  
+  polygon: {
+    fill: {
+      default: '#007bff',
+      selected: '#FFD700',
+      zone1: '#007bff',
+      zone2: '#28a745',
+      zone3: '#ffc107',
+      zone4: '#dc3545'
+    },
+    stroke: {
+      default: '#0056b3',
+      selected: '#FFA500',
+      zone1: '#0056b3',
+      zone2: '#1e7e34',
+      zone3: '#e0a800',
+      zone4: '#c82333'
+    }
+  },
+  
+  polyline: {
+    default: '#007bff',
+    animated: '#28a745',
+    interactive: '#ffc107',
+    route: '#dc3545'
+  },
+  
+  circle: {
+    fill: {
+      default: '#007bff',
+      coverage: '#28a745',
+      service: '#ffc107',
+      emergency: '#dc3545'
+    },
+    stroke: {
+      default: '#0056b3',
+      coverage: '#1e7e34',
+      service: '#e0a800',
+      emergency: '#c82333'
+    }
+  }
+} as const;

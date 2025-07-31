@@ -14,16 +14,16 @@ import EntryPointsPage from './pages/EntryPointsPage';
 import TripTrackingPage from './pages/TripTrackingPage';
 import BasicComponentsDemo from './pages/BasicComponentsDemo';
 import CustomComponentsDemo from './pages/CustomComponentsDemo';
-import ComponentsIndex from './pages/components-guide/ComponentsIndex';
-import GoogleMapGuide from './pages/components-guide/GoogleMapGuide';
-import MarkerGuide from './pages/components-guide/MarkerGuide';
-import InfoWindowGuide from './pages/components-guide/InfoWindowGuide';
-import PolylineGuide from './pages/components-guide/PolylineGuide';
-import PolygonGuide from './pages/components-guide/PolygonGuide';
-import CircleGuide from './pages/components-guide/CircleGuide';
-import RectangleGuide from './pages/components-guide/RectangleGuide';
-import TestGuide from './pages/components-guide/TestGuide';
-import SimpleTestGuide from './pages/components-guide/SimpleTestGuide';
+import ComponentsIndex from './pages/guides/ComponentsIndex';
+import GoogleMapGuide from './pages/guides/GoogleMapGuide';
+import MarkerGuide from './pages/guides/MarkerGuide';
+import InfoWindowGuide from './pages/guides/InfoWindowGuide';
+import PolylineGuide from './pages/guides/PolylineGuide';
+import PolygonGuide from './pages/guides/PolygonGuide';
+import CircleGuide from './pages/guides/CircleGuide';
+import RectangleGuide from './pages/guides/RectangleGuide';
+import TestGuide from './pages/guides/TestGuide';
+import SimpleTestGuide from './pages/guides/SimpleTestGuide';
 import './App.css';
 
 /**

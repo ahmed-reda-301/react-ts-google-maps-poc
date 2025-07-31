@@ -1,19 +1,26 @@
 /**
  * Location and coordinate constants
- * Centralized location for all geographic coordinates and location data
+ * Geographic coordinates and location data
  */
 
 import { LatLng } from '../types/common/LatLng';
+import { DEFAULT_CENTER, RIYADH_LANDMARKS } from './coreConstants';
+
+// Re-export core location constants
+export {
+  DEFAULT_CENTER,
+  RIYADH_LANDMARKS as RIYADH_LOCATIONS,
+} from './coreConstants';
 
 /**
- * Saudi Arabia locations
+ * Saudi Arabia major cities
  */
 export const SAUDI_ARABIA_LOCATIONS = {
   // Main center
-  center: { lat: 24.7136, lng: 46.6753 } as LatLng, // Riyadh
+  center: DEFAULT_CENTER,
 
   // Major cities
-  riyadh: { lat: 24.7136, lng: 46.6753 } as LatLng,
+  riyadh: DEFAULT_CENTER,
   jeddah: { lat: 21.3891, lng: 39.8579 } as LatLng,
   mecca: { lat: 21.3891, lng: 39.8579 } as LatLng,
   medina: { lat: 24.4539, lng: 39.6775 } as LatLng,
@@ -28,6 +35,9 @@ export const SAUDI_ARABIA_LOCATIONS = {
   najran: { lat: 17.4924, lng: 44.1277 } as LatLng,
   jizan: { lat: 16.8892, lng: 42.5511 } as LatLng,
   yanbu: { lat: 24.0889, lng: 38.0617 } as LatLng,
+
+  // Include Riyadh landmarks
+  ...RIYADH_LANDMARKS,
 } as const;
 
 /**

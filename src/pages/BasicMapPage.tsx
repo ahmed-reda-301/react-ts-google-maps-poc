@@ -11,7 +11,7 @@ import {
   PLACEHOLDERS,
   CODE_EXAMPLES,
   FEATURE_LISTS,
-  MAP_ZOOM_LEVELS 
+  ZOOM_LEVELS 
 } from '../constants';
 
 /**
@@ -19,7 +19,7 @@ import {
  */
 const BasicMapPage: FC = () => {
   const [mapCenter, setMapCenter] = useState(SAUDI_ARABIA_LOCATIONS.riyadh);
-  const [zoom, setZoom] = useState<number>(MAP_ZOOM_LEVELS.city);
+  const [zoom, setZoom] = useState<number>(ZOOM_LEVELS.CITY);
 
   const handleCenterChange = (lat: number, lng: number) => {
     setMapCenter({ lat, lng });
@@ -27,7 +27,7 @@ const BasicMapPage: FC = () => {
 
   const resetToDefault = () => {
     setMapCenter(SAUDI_ARABIA_LOCATIONS.riyadh);
-    setZoom(MAP_ZOOM_LEVELS.city);
+    setZoom(ZOOM_LEVELS.CITY);
   };
 
   return (
@@ -69,8 +69,8 @@ const BasicMapPage: FC = () => {
             <Input
               label={UI_LABELS.zoomLevel}
               type="range"
-              min={MAP_ZOOM_LEVELS.world}
-              max={MAP_ZOOM_LEVELS.maximum}
+              min={ZOOM_LEVELS.WORLD}
+              max={ZOOM_LEVELS.DETAIL}
               value={zoom}
               onChange={(e) => setZoom(parseInt(e.target.value))}
               helperText={`Current: ${zoom}`}

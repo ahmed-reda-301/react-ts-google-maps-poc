@@ -1,67 +1,47 @@
 /**
- * Map-related constants
- * Centralized location for all map configuration and coordinate constants
+ * Map-specific constants
+ * Constants specific to Google Maps functionality
  */
 
-import { LatLng } from '../types/common/LatLng';
+import { MAP_CONTAINERS, ZOOM_LEVELS, DEFAULT_MAP_OPTIONS, APP_STYLES } from './coreConstants';
 
-/**
- * Standard map container styles
- */
-export const MAP_CONTAINER_STYLES = {
-  default: {
-    width: '100%',
-    height: '500px',
-  },
-  small: {
-    width: '100%',
-    height: '400px',
-  },
-  large: {
-    width: '100%',
-    height: '600px',
-  },
-  fullHeight: {
-    width: '100%',
-    height: '100vh',
-  },
-} as const;
+// Re-export core map constants for backward compatibility
+export {
+  MAP_CONTAINERS as MAP_CONTAINER_STYLES,
+  ZOOM_LEVELS,
+  DEFAULT_MAP_OPTIONS,
+} from './coreConstants';
 
-/**
- * Default map options for Google Maps
- */
-export const DEFAULT_MAP_OPTIONS: google.maps.MapOptions = {
-  zoomControl: true,
-  mapTypeControl: true,
-  scaleControl: true,
-  streetViewControl: true,
-  rotateControl: true,
-  fullscreenControl: true,
-  disableDefaultUI: false,
-};
+// Legacy support - use core constants
+export const MAP_CONTAINER_STYLE = MAP_CONTAINERS.FULL;
 
-/**
- * Map zoom levels
- */
 export const MAP_ZOOM_LEVELS = {
-  world: 2,
-  continent: 4,
-  country: 6,
-  region: 8,
-  city: 10,
-  district: 12,
-  street: 14,
-  building: 16,
-  detail: 18,
-  maximum: 20,
+  world: ZOOM_LEVELS.WORLD,
+  continent: ZOOM_LEVELS.CONTINENT,
+  country: ZOOM_LEVELS.COUNTRY,
+  region: ZOOM_LEVELS.REGION,
+  city: ZOOM_LEVELS.CITY,
+  district: ZOOM_LEVELS.DISTRICT,
+  street: ZOOM_LEVELS.STREET,
+  building: ZOOM_LEVELS.BUILDING,
+  detail: ZOOM_LEVELS.DETAIL,
 } as const;
 
 /**
- * Default zoom level for different map types
+ * Common styling options for map elements
+ */
+export const COMMON_STYLES = {
+  FILL_OPACITY: APP_STYLES.OPACITY,
+  STROKE_OPACITY: APP_STYLES.OPACITY,
+  STROKE_WEIGHT: APP_STYLES.STROKE_WEIGHT,
+} as const;
+
+/**
+ * Default zoom levels for different contexts
  */
 export const DEFAULT_ZOOM_LEVELS = {
-  country: MAP_ZOOM_LEVELS.country,
-  city: MAP_ZOOM_LEVELS.city,
-  district: MAP_ZOOM_LEVELS.district,
-  street: MAP_ZOOM_LEVELS.street,
+  country: ZOOM_LEVELS.COUNTRY,
+  city: ZOOM_LEVELS.CITY,
+  district: ZOOM_LEVELS.DISTRICT,
+  street: ZOOM_LEVELS.STREET,
 } as const;

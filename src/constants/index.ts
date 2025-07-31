@@ -3,24 +3,26 @@
  * Centralized export for all application constants
  */
 
-// Map-related constants
-export * from './mapConstants';
+// Core constants (base for all other constants)
+export * from './coreConstants';
+
+// Specialized constants
 export * from './locationConstants';
 export * from './markerConstants';
-
-// UI and content constants
 export * from './uiConstants';
 export * from './codeExamples';
+export * from './guide';
 
-// Re-export commonly used constants with aliases for convenience
-export {
-  SAUDI_ARABIA_LOCATIONS as LOCATIONS,
-  DEFAULT_MAP_CENTERS as MAP_CENTERS,
-} from './locationConstants';
+// Guide-specific constants (uses core constants)
+export * from './guideConstants';
 
+// Legacy aliases for backward compatibility
 export {
-  MAP_CONTAINER_STYLES as CONTAINER_STYLES,
-} from './mapConstants';
+  MAP_CONTAINERS as MAP_CONTAINER_STYLES,
+  MAP_CONTAINERS,
+  RIYADH_LANDMARKS as RIYADH_LOCATIONS,
+  DEFAULT_CENTER,
+} from './coreConstants';
 
 export {
   MARKER_ICONS as ICONS,
@@ -35,25 +37,3 @@ export {
 export {
   CODE_EXAMPLES as EXAMPLES,
 } from './codeExamples';
-
-export {
-  MAP_CONTAINER_STYLES,
-  DEFAULT_MAP_OPTIONS,
-  MAP_ZOOM_LEVELS,
-} from './mapConstants';
-
-export {
-  MARKER_ICONS,
-  MARKER_CATEGORIES,
-  getMarkerIcon,
-  getMarkerColor,
-  getMarkerLabel,
-} from './markerConstants';
-
-export {
-  PAGE_CONTENT,
-  UI_LABELS,
-  ERROR_MESSAGES,
-  SUCCESS_MESSAGES,
-  TRAVEL_MODES,
-} from './uiConstants';

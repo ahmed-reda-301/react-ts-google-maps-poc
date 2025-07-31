@@ -1,2 +1,2 @@
 // Export all control components
-export { default as InteractiveFormControls } from './InteractiveFormControls';
+export { default as InteractiveFormControls } from "./guide/InteractiveFormControls";
