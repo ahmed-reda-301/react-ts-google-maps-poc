@@ -15,6 +15,9 @@ const navigationItems = [
   { path: '/directions', label: 'Directions', icon: '🧭' },
   { path: '/entry-points', label: 'Entry Points', icon: '🏭' },
   { path: '/trip-tracking', label: 'Trip Tracking', icon: '🚛' },
+  { path: '/basic-components-demo', label: 'Basic Components Demo', icon: '🎮' },
+  { path: '/custom-components-demo', label: 'Custom Components Demo', icon: '🚀' },
+  { path: '/components-guide', label: 'Components Guide', icon: '📚' },
 ];
 
 /**
@@ -109,15 +112,15 @@ const Header: FC = () => {
             <Link
               key={item.path}
               to={item.path}
-              style={location.pathname === item.path ? activeNavItemStyle : navItemStyle}
+              style={location.pathname === item.path || location.pathname.startsWith(item.path + '/') ? activeNavItemStyle : navItemStyle}
               onMouseOver={(e) => {
-                if (location.pathname !== item.path) {
+                if (location.pathname !== item.path && !location.pathname.startsWith(item.path + '/')) {
                   e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.1)';
                   e.currentTarget.style.color = 'white';
                 }
               }}
               onMouseOut={(e) => {
-                if (location.pathname !== item.path) {
+                if (location.pathname !== item.path && !location.pathname.startsWith(item.path + '/')) {
                   e.currentTarget.style.backgroundColor = 'transparent';
                   e.currentTarget.style.color = 'rgba(255,255,255,0.8)';
                 }

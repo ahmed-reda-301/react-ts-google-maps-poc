@@ -1,0 +1,28 @@
+<svg width="32" height="32" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="1" dy="1" stdDeviation="1" flood-color="rgba(0,0,0,0.3)"/>
+    </filter>
+  </defs>
+  
+  <!-- Scale platform -->
+  <rect x="4" y="20" width="24" height="4" rx="2" fill="#2196F3" stroke="#1976D2" stroke-width="1" filter="url(#shadow)"/>
+  
+  <!-- Scale base -->
+  <rect x="14" y="24" width="4" height="6" fill="#1976D2"/>
+  
+  <!-- Weight display -->
+  <rect x="8" y="8" width="16" height="8" rx="2" fill="#E3F2FD" stroke="#1976D2" stroke-width="1"/>
+  
+  <!-- Display screen -->
+  <rect x="10" y="10" width="12" height="4" fill="#0D47A1"/>
+  
+  <!-- Weight reading -->
+  <text x="16" y="13" text-anchor="middle" font-family="Arial" font-size="3" font-weight="bold" fill="#00E676">45.2T</text>
+  
+  <!-- Scale symbol -->
+  <circle cx="16" y="18" r="1" fill="#FFC107"/>
+  
+  <!-- Label -->
+  <text x="16" y="6" text-anchor="middle" font-family="Arial" font-size="3" font-weight="bold" fill="#1976D2">WEIGHT</text>
+</svg>

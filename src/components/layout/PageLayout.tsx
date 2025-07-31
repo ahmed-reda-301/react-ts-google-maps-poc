@@ -32,7 +32,7 @@ const PageLayout: FC<PageLayoutProps> = ({
   children,
   containerStyle,
   centerHeader = true,
-  maxWidth = '1200px',
+  maxWidth = '100%',
   padding,
 }) => {
   const containerStyles: React.CSSProperties = {

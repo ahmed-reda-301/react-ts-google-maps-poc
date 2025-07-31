@@ -1,0 +1,21 @@
+<svg width="32" height="32" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="1" dy="1" stdDeviation="1" flood-color="rgba(0,0,0,0.3)"/>
+    </filter>
+  </defs>
+  
+  <!-- Shield background -->
+  <path d="M16 4 L24 8 L24 18 Q24 24 16 28 Q8 24 8 18 L8 8 Z" fill="#F44336" stroke="#D32F2F" stroke-width="1" filter="url(#shadow)"/>
+  
+  <!-- Inner shield -->
+  <path d="M16 6 L22 9 L22 17 Q22 22 16 25 Q10 22 10 17 L10 9 Z" fill="#FFCDD2"/>
+  
+  <!-- Security symbol -->
+  <circle cx="16" cy="14" r="3" fill="#D32F2F"/>
+  <rect x="14" y="16" width="4" height="6" rx="1" fill="#D32F2F"/>
+  <rect x="15" y="17" width="2" height="4" fill="#FFCDD2"/>
+  
+  <!-- Badge text -->
+  <text x="16" y="26" text-anchor="middle" font-family="Arial" font-size="4" font-weight="bold" fill="#D32F2F">SEC</text>
+</svg>
