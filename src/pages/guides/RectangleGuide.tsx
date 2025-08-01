@@ -9,11 +9,11 @@ import {
   GUIDE_ZOOM_LEVELS, 
   GUIDE_ZONES,
   GUIDE_STYLING_EXAMPLES,
-  GUIDE_STYLES,
-  GUIDE_CONTROL_STYLES
+  GUIDE_STYLES
 } from '../../constants/guideConstants';
-import { commonZones, controlPanelStyles } from '../../data/guide/commonGuideData';
+import { commonZones } from '../../data/guide/commonGuideData';
 import { createMapClickHandler, createZoneClickHandler } from '../../utils/guideHelpers';
+import '../../styles/compact-controls.css';
 
 const RectangleGuide: React.FC = () => {
   const {
@@ -208,6 +208,118 @@ const onMapClick = useCallback((e) => {
     }
   ];
 
+  // Define control sections for each example - compact design
+  const controlSections = {
+    basic: [
+      {
+        title: 'Basic Rectangle',
+        content: (
+          <div className="control-group compact">
+            <div className="compact-info">
+              ⬜ Rectangle Shape • 📍 Business Area • 🎨 Standard Fill & Stroke
+            </div>
+          </div>
+        )
+      }
+    ],
+    multiple: [
+      {
+        title: 'Zone Selection',
+        content: (
+          <div className="control-group compact">
+            <div className="compact-zones">
+              {zones.map(zone => (
+                <button
+                  key={zone.id}
+                  onClick={() => handleZoneClick(zone.id)}
+                  className={`compact-zone-btn ${selectedZone === zone.id ? 'selected' : ''}`}
+                  style={{
+                    borderColor: zone.strokeColor,
+                    backgroundColor: selectedZone === zone.id ? zone.fillColor + '30' : 'transparent'
+                  }}
+                >
+                  <span className="zone-color-dot" style={{ backgroundColor: zone.fillColor }}></span>
+                  {zone.name}
+                </button>
+              ))}
+            </div>
+            {selectedZone && (
+              <div className="compact-selected">
+                Selected: <strong>{zones.find(z => z.id === selectedZone)?.name}</strong>
+              </div>
+            )}
+          </div>
+        )
+      }
+    ],
+    interactive: [
+      {
+        title: 'Rectangle Drawing',
+        content: (
+          <div className="control-group compact">
+            <div className="compact-status">
+              <div className="status-info">
+                <span className={`status-dot ${isDrawing ? 'active' : 'inactive'}`}></span>
+                <span>{isDrawing ? 'Drawing' : 'Ready'}</span>
+                <span className="points-badge">{rectangles.length}</span>
+              </div>
+              <div className="compact-controls">
+                <button 
+                  onClick={clearRectangles}
+                  className="control-button danger compact"
+                  disabled={rectangles.length === 0 && !isDrawing}
+                >
+                  🗑️ Clear All
+                </button>
+                {isDrawing && (
+                  <button 
+                    onClick={resetRectangleState}
+                    className="control-button secondary compact"
+                  >
+                    ❌ Cancel
+                  </button>
+                )}
+              </div>
+            </div>
+            <div className="compact-info">
+              {isDrawing 
+                ? 'Click on the map to set the end point'
+                : 'Click on the map to start drawing a rectangle'
+              }
+            </div>
+          </div>
+        )
+      }
+    ],
+    styled: [
+      {
+        title: 'Styling Options',
+        content: (
+          <div className="control-group compact">
+            <div className="compact-styles">
+              <div className="style-item">
+                <div className="style-preview fill" style={{ backgroundColor: '#ff6b6b' }}></div>
+                <span>Fill Color</span>
+              </div>
+              <div className="style-item">
+                <div className="style-preview stroke" style={{ borderColor: '#4ecdc4' }}></div>
+                <span>Stroke Color</span>
+              </div>
+              <div className="style-item">
+                <div className="style-preview opacity" style={{ backgroundColor: '#45b7d1', opacity: 0.5 }}></div>
+                <span>Opacity</span>
+              </div>
+              <div className="style-item">
+                <div className="style-preview bounds" style={{ borderColor: '#96ceb4', borderWidth: '3px', borderStyle: 'dashed' }}></div>
+                <span>Bounds</span>
+              </div>
+            </div>
+          </div>
+        )
+      }
+    ]
+  };
+
   return (
     <GuideLayout
       title={rectangleGuideData.title}
@@ -223,74 +335,8 @@ const onMapClick = useCallback((e) => {
       navigationLinks={rectangleGuideData.navigationLinks}
       stylingExamples={stylingExamples}
       onMapReset={resetRectangleState}
-    >
-      <div style={controlPanelStyles.panel}>
-        {selectedExample === 'interactive' && (
-          <div style={controlPanelStyles.section}>
-            <h4 style={controlPanelStyles.title}>Interactive Controls</h4>
-            <div style={controlPanelStyles.buttonGroup}>
-              <p style={controlPanelStyles.instruction}>
-                {isDrawing 
-                  ? 'Click on the map to set the end point of your rectangle'
-                  : 'Click on the map to start drawing a rectangle'
-                }
-              </p>
-              <button 
-                onClick={clearRectangles}
-                style={{
-                  ...GUIDE_CONTROL_STYLES.PRIMARY_BUTTON,
-                  ...(rectangles.length === 0 && !isDrawing ? GUIDE_CONTROL_STYLES.DISABLED_BUTTON : {})
-                }}
-                disabled={rectangles.length === 0 && !isDrawing}
-              >
-                Clear All Rectangles
-              </button>
-              {isDrawing && (
-                <button 
-                  onClick={() => {
-                    resetRectangleState();
-                  }}
-                  style={GUIDE_CONTROL_STYLES.SECONDARY_BUTTON}
-                >
-                  Cancel Drawing
-                </button>
-              )}
-            </div>
-            <div style={controlPanelStyles.infoDisplay}>
-              <p>Rectangles created: {rectangles.length}</p>
-              {isDrawing && <p>Drawing in progress...</p>}
-            </div>
-          </div>
-        )}
-
-        {selectedExample === 'multiple' && (
-          <div style={controlPanelStyles.section}>
-            <h4 style={controlPanelStyles.title}>Zone Selection</h4>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-              {zones.map(zone => (
-                <button
-                  key={zone.id}
-                  onClick={() => handleZoneClick(zone.id)}
-                  style={{
-                    ...GUIDE_CONTROL_STYLES.PRIMARY_BUTTON,
-                    borderColor: zone.strokeColor,
-                    backgroundColor: selectedZone === zone.id ? zone.fillColor + '20' : 'transparent',
-                    color: selectedZone === zone.id ? zone.strokeColor : '#333'
-                  }}
-                >
-                  {zone.name}
-                </button>
-              ))}
-            </div>
-            {selectedZone && (
-              <div style={controlPanelStyles.infoDisplay}>
-                <p>Selected: {zones.find(z => z.id === selectedZone)?.name}</p>
-              </div>
-            )}
-          </div>
-        )}
-      </div>
-    </GuideLayout>
+      controlSections={controlSections}
+    />
   );
 };
 

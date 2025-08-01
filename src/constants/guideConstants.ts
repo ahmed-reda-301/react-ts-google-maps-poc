@@ -171,7 +171,8 @@ export const GUIDE_COVERAGE_AREAS = {
     radius: 500,
     color: APP_STYLES.COLORS.INFO,
     type: 'wifi',
-    description: 'High-speed internet access'
+    description: 'High-speed internet access',
+    icon: '📶'
   } as GuideCoverageArea,
   DELIVERY_ZONE: {
     id: 'delivery-1',
@@ -180,7 +181,8 @@ export const GUIDE_COVERAGE_AREAS = {
     radius: 3000,
     color: APP_STYLES.COLORS.SUCCESS,
     type: 'delivery',
-    description: 'Fast delivery service area'
+    description: 'Fast delivery service area',
+    icon: '🚚'
   } as GuideCoverageArea,
   EMERGENCY_ZONE: {
     id: 'emergency-1',
@@ -189,7 +191,8 @@ export const GUIDE_COVERAGE_AREAS = {
     radius: 1500,
     color: APP_STYLES.COLORS.ERROR,
     type: 'emergency',
-    description: 'Emergency response coverage'
+    description: 'Emergency response coverage',
+    icon: '🚨'
   } as GuideCoverageArea,
   SECURITY_ZONE: {
     id: 'security-1',
@@ -198,7 +201,8 @@ export const GUIDE_COVERAGE_AREAS = {
     radius: 800,
     color: APP_STYLES.COLORS.WARNING,
     type: 'security',
-    description: 'Enhanced security monitoring'
+    description: 'Enhanced security monitoring',
+    icon: '🔒'
   } as GuideCoverageArea,
 };
 

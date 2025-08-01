@@ -65,6 +65,7 @@ export interface GuideCoverageArea {
   color: string;
   type: string;
   description: string;
+  icon?: string;
   fillOpacity?: number;
   strokeOpacity?: number;
   strokeWeight?: number;

@@ -1,7 +1,6 @@
 import React from 'react';
 import { GoogleMap, Polygon, Marker } from '@react-google-maps/api';
 import GuideLayout from '../../components/guide/GuideLayout';
-import PolygonControls from '../../components/controls/guide/PolygonControls';
 import { polygonGuideData } from '../../data/guide/polygonGuideData';
 import { usePolygonGuideState } from '../../hooks/useGuideState';
 import { 
@@ -14,6 +13,7 @@ import {
 } from '../../constants/guideConstants';
 import { commonZones } from '../../data/guide/commonGuideData';
 import { createMapClickHandler, createZoneClickHandler } from '../../utils/guideHelpers';
+import '../../styles/polygon-guide.css';
 
 const PolygonGuide: React.FC = () => {
   const {
@@ -185,6 +185,143 @@ const polygonPaths = [
     }
   ];
 
+  // Define control sections for each example - compact design
+  const controlSections = {
+    basic: [
+      {
+        title: 'Basic Polygon',
+        content: (
+          <div className="control-group compact">
+            <div className="compact-info">
+              ���️ Basic Shape • 📍 Business District • 🎨 Standard Fill & Stroke
+            </div>
+          </div>
+        )
+      }
+    ],
+    multiple: [
+      {
+        title: 'Zone Selection',
+        content: (
+          <div className="control-group compact">
+            <div className="compact-zones">
+              {zones.map(zone => (
+                <button
+                  key={zone.id}
+                  onClick={() => handleZoneClick(zone.id)}
+                  className={`compact-zone-btn ${selectedZone === zone.id ? 'selected' : ''}`}
+                  style={{
+                    borderColor: zone.strokeColor,
+                    backgroundColor: selectedZone === zone.id ? zone.fillColor + '30' : 'transparent'
+                  }}
+                >
+                  <span className="zone-color-dot" style={{ backgroundColor: zone.fillColor }}></span>
+                  {zone.name}
+                </button>
+              ))}
+            </div>
+            {selectedZone && (
+              <div className="compact-selected">
+                Selected: <strong>{zones.find(z => z.id === selectedZone)?.name}</strong>
+              </div>
+            )}
+          </div>
+        )
+      }
+    ],
+    interactive: [
+      {
+        title: 'Polygon Builder',
+        content: (
+          <div className="control-group compact">
+            <div className="compact-status">
+              <div className="status-info">
+                <span className={`status-dot ${isBuilding ? 'active' : 'inactive'}`}></span>
+                <span>{isBuilding ? 'Building' : 'Ready'}</span>
+                <span className="points-badge">{interactivePolygon.length}</span>
+              </div>
+              
+              <div className="compact-controls">
+                {!isBuilding ? (
+                  <button 
+                    onClick={startBuilding}
+                    className="control-button primary compact"
+                  >
+                    🏗️ Start Building
+                  </button>
+                ) : (
+                  <>
+                    <button 
+                      onClick={finishPolygon}
+                      className={`control-button ${interactivePolygon.length >= 3 ? 'success' : 'disabled'} compact`}
+                      disabled={interactivePolygon.length < 3}
+                    >
+                      ✅ Finish ({interactivePolygon.length >= 3 ? 'Ready' : 'Need 3+'})
+                    </button>
+                    <button 
+                      onClick={clearPolygon}
+                      className="control-button danger compact"
+                    >
+                      🗑️ Clear
+                    </button>
+                  </>
+                )}
+              </div>
+            </div>
+            
+            {interactivePolygon.length > 0 && interactivePolygon.length < 3 && (
+              <div className="compact-warning">
+                ⚠️ Need at least 3 points to create a polygon
+              </div>
+            )}
+          </div>
+        )
+      }
+    ],
+    holes: [
+      {
+        title: 'Polygon with Holes',
+        content: (
+          <div className="control-group compact">
+            <div className="compact-features">
+              <span>🔵 Outer Boundary</span>
+              <span>⭕ Inner Holes</span>
+              <span>🔄 Opposite Winding</span>
+              <span>🎯 Courtyards & Islands</span>
+            </div>
+          </div>
+        )
+      }
+    ],
+    styled: [
+      {
+        title: 'Styling Options',
+        content: (
+          <div className="control-group compact">
+            <div className="compact-styles">
+              <div className="style-item">
+                <div className="style-preview fill" style={{ backgroundColor: '#ff6b6b' }}></div>
+                <span>Fill Color</span>
+              </div>
+              <div className="style-item">
+                <div className="style-preview stroke" style={{ borderColor: '#4ecdc4' }}></div>
+                <span>Stroke Color</span>
+              </div>
+              <div className="style-item">
+                <div className="style-preview opacity" style={{ backgroundColor: '#45b7d1', opacity: 0.5 }}></div>
+                <span>Opacity</span>
+              </div>
+              <div className="style-item">
+                <div className="style-preview weight" style={{ borderColor: '#96ceb4', borderWidth: '3px' }}></div>
+                <span>Stroke Weight</span>
+              </div>
+            </div>
+          </div>
+        )
+      }
+    ]
+  };
+
   return (
     <GuideLayout
       title={polygonGuideData.title}
@@ -200,19 +337,8 @@ const polygonPaths = [
       navigationLinks={polygonGuideData.navigationLinks}
       stylingExamples={stylingExamples}
       onMapReset={resetPolygonState}
-    >
-      <PolygonControls
-        selectedExample={selectedExample}
-        interactivePolygon={interactivePolygon}
-        isBuilding={isBuilding}
-        selectedZone={selectedZone}
-        zones={zones}
-        onStartBuilding={startBuilding}
-        onFinishPolygon={finishPolygon}
-        onClearPolygon={clearPolygon}
-        onZoneSelect={handleZoneClick}
-      />
-    </GuideLayout>
+      controlSections={controlSections}
+    />
   );
 };
 

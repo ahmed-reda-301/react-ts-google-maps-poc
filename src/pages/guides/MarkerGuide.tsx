@@ -1,7 +1,6 @@
 import React from 'react';
 import { GoogleMap, Marker } from '@react-google-maps/api';
 import GuideLayout from '../../components/guide/GuideLayout';
-import MarkerControls from '../../components/controls/guide/MarkerControls';
 import { markerGuideData } from '../../data/guide/markerGuideData';
 import { useMarkerGuideState } from '../../hooks/useGuideState';
 import { 
@@ -12,6 +11,7 @@ import {
   GUIDE_STYLING_EXAMPLES 
 } from '../../constants';
 import { createDragEndHandler } from '../../utils/guideHelpers';
+import '../../styles/compact-controls.css';
 
 const MarkerGuide: React.FC = () => {
   const {
@@ -116,6 +116,94 @@ const MarkerGuide: React.FC = () => {
     }
   ];
 
+  // Define control sections for each example - compact design
+  const controlSections = {
+    basic: [
+      {
+        title: 'Basic Marker',
+        content: (
+          <div className="control-group compact">
+            <div className="compact-info">
+              📍 Simple Marker • 🏢 Kingdom Centre • �� Click Events
+            </div>
+          </div>
+        )
+      }
+    ],
+    interactive: [
+      {
+        title: 'Interactive Markers',
+        content: (
+          <div className="control-group compact">
+            <div className="compact-markers">
+              {interactiveMarkers.map(marker => (
+                <button
+                  key={marker.id}
+                  onClick={() => handleMarkerClick(Number(marker.id))}
+                  className={`compact-marker-btn ${selectedMarker === Number(marker.id) ? 'selected' : ''}`}
+                >
+                  📍 {marker.title}
+                </button>
+              ))}
+            </div>
+            {selectedMarker && (
+              <div className="compact-selected">
+                Selected: <strong>{interactiveMarkers.find(m => Number(m.id) === selectedMarker)?.title}</strong>
+              </div>
+            )}
+          </div>
+        )
+      }
+    ],
+    draggable: [
+      {
+        title: 'Draggable Marker',
+        content: (
+          <div className="control-group compact">
+            <div className="compact-position">
+              <div className="position-info">
+                📍 Position: {markerPosition.lat.toFixed(4)}, {markerPosition.lng.toFixed(4)}
+              </div>
+              <button 
+                onClick={() => handleMarkerDrag({ ...RIYADH_LANDMARKS.KINGDOM_CENTRE })}
+                className="control-button primary compact"
+              >
+                🔄 Reset Position
+              </button>
+            </div>
+          </div>
+        )
+      }
+    ],
+    customStyling: [
+      {
+        title: 'Custom Styling',
+        content: (
+          <div className="control-group compact">
+            <div className="compact-features">
+              <span>🎨 Custom Icons</span>
+              <span>📏 Size Control</span>
+              <span>⚓ Anchor Points</span>
+              <span>🎯 Click Handlers</span>
+            </div>
+          </div>
+        )
+      }
+    ],
+    multiple: [
+      {
+        title: 'Multiple Markers',
+        content: (
+          <div className="control-group compact">
+            <div className="compact-info">
+              🏢 {interactiveMarkers.length} Landmarks • 📍 Riyadh City • 🗺️ Interactive Map
+            </div>
+          </div>
+        )
+      }
+    ]
+  };
+
   return (
     <GuideLayout
       title={markerGuideData.title}
@@ -131,16 +219,8 @@ const MarkerGuide: React.FC = () => {
       navigationLinks={markerGuideData.navigationLinks}
       stylingExamples={stylingExamples}
       onMapReset={resetMarkerState}
-    >
-      <MarkerControls
-        selectedExample={selectedExample}
-        selectedMarker={selectedMarker}
-        markerPosition={markerPosition}
-        interactiveMarkers={interactiveMarkers}
-        onMarkerClick={handleMarkerClick}
-        onResetPosition={() => handleMarkerDrag({ ...RIYADH_LANDMARKS.KINGDOM_CENTRE })}
-      />
-    </GuideLayout>
+      controlSections={controlSections}
+    />
   );
 };
 

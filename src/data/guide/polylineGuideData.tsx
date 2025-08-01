@@ -395,6 +395,490 @@ const GeodesicComparison = () => {
     </GoogleMap>
   );
 };`
+    },
+
+    truckTracking: {
+      title: 'Truck Tracking Animation',
+      description: 'Real-time truck movement simulation with route visualization',
+      component: (
+        <GoogleMap
+          mapContainerStyle={MAP_CONTAINERS.DEFAULT}
+          center={{ lat: 24.6500, lng: 46.7000 }}
+          zoom={ZOOM_LEVELS.STREET}
+        >
+          {/* This will be populated by the component's state */}
+        </GoogleMap>
+      ),
+      code: `import { GoogleMap, Polyline, Marker } from '@react-google-maps/api';
+import { useState, useEffect, useCallback } from 'react';
+
+const TruckTrackingAnimation = () => {
+  const [truckPosition, setTruckPosition] = useState(null);
+  const [currentPathIndex, setCurrentPathIndex] = useState(0);
+  const [isTracking, setIsTracking] = useState(false);
+  const [completedPath, setCompletedPath] = useState([]);
+
+  // Saudi Arabia internal route - Riyadh to Dammam highway
+  const truckRoute = [
+    { lat: 24.7136, lng: 46.6753 }, // Riyadh - Kingdom Centre
+    { lat: 24.7200, lng: 46.7100 }, // Exit Riyadh
+    { lat: 24.7500, lng: 46.8000 }, // Highway checkpoint 1
+    { lat: 25.0000, lng: 47.2000 }, // Highway checkpoint 2
+    { lat: 25.2000, lng: 47.8000 }, // Highway checkpoint 3
+    { lat: 25.5000, lng: 48.5000 }, // Highway checkpoint 4
+    { lat: 26.0000, lng: 49.2000 }, // Approaching Dammam
+    { lat: 26.4207, lng: 50.0888 }  // Dammam
+  ];
+
+  const calculateBearing = useCallback((start, end) => {
+    const dLng = (end.lng - start.lng) * Math.PI / 180;
+    const lat1 = start.lat * Math.PI / 180;
+    const lat2 = end.lat * Math.PI / 180;
+    
+    const y = Math.sin(dLng) * Math.cos(lat2);
+    const x = Math.cos(lat1) * Math.sin(lat2) - Math.sin(lat1) * Math.cos(lat2) * Math.cos(dLng);
+    
+    return (Math.atan2(y, x) * 180 / Math.PI + 360) % 360;
+  }, []);
+
+  useEffect(() => {
+    if (!isTracking || currentPathIndex >= truckRoute.length - 1) {
+      if (currentPathIndex >= truckRoute.length - 1) {
+        setIsTracking(false);
+      }
+      return;
+    }
+
+    const interval = setInterval(() => {
+      const currentPoint = truckRoute[currentPathIndex];
+      const nextPoint = truckRoute[currentPathIndex + 1];
+      
+      setTruckPosition({
+        ...currentPoint,
+        bearing: calculateBearing(currentPoint, nextPoint)
+      });
+      
+      setCompletedPath(prev => [...prev, currentPoint]);
+      setCurrentPathIndex(prev => prev + 1);
+    }, 2000);
+
+    return () => clearInterval(interval);
+  }, [isTracking, currentPathIndex, calculateBearing]);
+
+  const startTracking = () => {
+    setCurrentPathIndex(0);
+    setCompletedPath([]);
+    setTruckPosition({ ...truckRoute[0], bearing: 0 });
+    setIsTracking(true);
+  };
+
+  const resetTracking = () => {
+    setIsTracking(false);
+    setCurrentPathIndex(0);
+    setCompletedPath([]);
+    setTruckPosition(null);
+  };
+
+  return (
+    <div>
+      <div style={{ marginBottom: '10px' }}>
+        <button onClick={startTracking} disabled={isTracking}>
+          🚚 Start Tracking
+        </button>
+        <button onClick={resetTracking} style={{ marginLeft: '10px' }}>
+          🔄 Reset
+        </button>
+        <span style={{ marginLeft: '15px' }}>
+          Status: {isTracking ? '🟢 Tracking' : '🔴 Stopped'} | 
+          Progress: {currentPathIndex}/{truckRoute.length - 1}
+        </span>
+      </div>
+      
+      <GoogleMap
+        mapContainerStyle={{ width: '100%', height: '400px' }}
+        center={{ lat: 25.0, lng: 48.0 }}
+        zoom={7}
+      >
+        {/* Full route path */}
+        <Polyline
+          path={truckRoute}
+          options={{
+            strokeColor: '#E0E0E0',
+            strokeOpacity: 0.6,
+            strokeWeight: 3,
+            geodesic: true
+          }}
+        />
+        
+        {/* Completed path */}
+        {completedPath.length > 0 && (
+          <Polyline
+            path={completedPath}
+            options={{
+              strokeColor: '#4CAF50',
+              strokeOpacity: 0.8,
+              strokeWeight: 5,
+              geodesic: true
+            }}
+          />
+        )}
+
+        {/* Start marker */}
+        <Marker
+          position={truckRoute[0]}
+          title="Start - Riyadh"
+          icon={{
+            url: 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(\`
+              <svg width="30" height="30" viewBox="0 0 30 30" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="15" cy="15" r="12" fill="#4CAF50" stroke="white" stroke-width="2"/>
+                <text x="15" y="20" text-anchor="middle" fill="white" font-size="16" font-weight="bold">S</text>
+              </svg>
+            \`),
+            scaledSize: new window.google.maps.Size(30, 30)
+          }}
+        />
+
+        {/* End marker */}
+        <Marker
+          position={truckRoute[truckRoute.length - 1]}
+          title="End - Dammam"
+          icon={{
+            url: 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(\`
+              <svg width="30" height="30" viewBox="0 0 30 30" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="15" cy="15" r="12" fill="#F44336" stroke="white" stroke-width="2"/>
+                <text x="15" y="20" text-anchor="middle" fill="white" font-size="16" font-weight="bold">E</text>
+              </svg>
+            \`),
+            scaledSize: new window.google.maps.Size(30, 30)
+          }}
+        />
+
+        {/* Truck marker */}
+        {truckPosition && (
+          <Marker
+            position={truckPosition}
+            title="Truck Position"
+            icon={{
+              url: 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(\`
+                <svg width="40" height="40" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+                  <g transform="rotate(\${truckPosition.bearing} 20 20)">
+                    <rect x="8" y="12" width="24" height="16" fill="#2196F3" stroke="white" stroke-width="2" rx="2"/>
+                    <rect x="8" y="16" width="16" height="8" fill="#1976D2"/>
+                    <circle cx="14" cy="30" r="3" fill="#424242"/>
+                    <circle cx="26" cy="30" r="3" fill="#424242"/>
+                    <polygon points="32,12 36,16 36,20 32,20" fill="#1976D2"/>
+                  </g>
+                </svg>
+              \`),
+              scaledSize: new window.google.maps.Size(40, 40),
+              anchor: new window.google.maps.Point(20, 20)
+            }}
+          />
+        )}
+      </GoogleMap>
+    </div>
+  );
+};`
+    },
+
+    truckRoute: {
+      title: 'Truck Route with Waypoints',
+      description: 'Delivery route with start, end, and waypoint markers',
+      component: (
+        <GoogleMap
+          mapContainerStyle={MAP_CONTAINERS.DEFAULT}
+          center={{ lat: 24.6500, lng: 46.7000 }}
+          zoom={ZOOM_LEVELS.DISTRICT}
+        >
+          {/* This will be populated by the component's state */}
+        </GoogleMap>
+      ),
+      code: `import { GoogleMap, Polyline, Marker } from '@react-google-maps/api';
+
+const TruckRouteWithWaypoints = () => {
+  // Riyadh delivery route with multiple stops
+  const deliveryRoute = [
+    { lat: 24.7136, lng: 46.6753, name: "Depot - Kingdom Centre", type: "start" },
+    { lat: 24.7200, lng: 46.6900, name: "Stop 1 - Business District", type: "waypoint" },
+    { lat: 24.7000, lng: 46.7100, name: "Stop 2 - Shopping Mall", type: "waypoint" },
+    { lat: 24.6800, lng: 46.7200, name: "Stop 3 - Residential Area", type: "waypoint" },
+    { lat: 24.6600, lng: 46.7000, name: "Stop 4 - Office Complex", type: "waypoint" },
+    { lat: 24.6400, lng: 46.6800, name: "Stop 5 - Hospital", type: "waypoint" },
+    { lat: 24.6308, lng: 46.7073, name: "Final Stop - Masmak Fortress", type: "end" }
+  ];
+
+  const getMarkerIcon = (type, index) => {
+    const colors = {
+      start: '#4CAF50',
+      waypoint: '#FF9800', 
+      end: '#F44336'
+    };
+    
+    const labels = {
+      start: 'S',
+      waypoint: index.toString(),
+      end: 'E'
+    };
+
+    return {
+      url: 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(\`
+        <svg width="35" height="35" viewBox="0 0 35 35" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="17.5" cy="17.5" r="15" fill="\${colors[type]}" stroke="white" stroke-width="3"/>
+          <text x="17.5" y="23" text-anchor="middle" fill="white" font-size="14" font-weight="bold">
+            \${labels[type]}
+          </text>
+        </svg>
+      \`),
+      scaledSize: new window.google.maps.Size(35, 35)
+    };
+  };
+
+  return (
+    <GoogleMap
+      mapContainerStyle={{ width: '100%', height: '400px' }}
+      center={{ lat: 24.6700, lng: 46.6900 }}
+      zoom={12}
+    >
+      {/* Route polyline */}
+      <Polyline
+        path={deliveryRoute.map(point => ({ lat: point.lat, lng: point.lng }))}
+        options={{
+          strokeColor: '#2196F3',
+          strokeOpacity: 0.8,
+          strokeWeight: 4,
+          geodesic: true
+        }}
+      />
+
+      {/* Route markers */}
+      {deliveryRoute.map((point, index) => (
+        <Marker
+          key={index}
+          position={{ lat: point.lat, lng: point.lng }}
+          title={point.name}
+          icon={getMarkerIcon(point.type, index)}
+        />
+      ))}
+    </GoogleMap>
+  );
+};`
+    },
+
+    truckBidirectional: {
+      title: 'Bidirectional Truck Movement',
+      description: 'Truck that changes direction and returns with proper orientation',
+      component: (
+        <GoogleMap
+          mapContainerStyle={MAP_CONTAINERS.DEFAULT}
+          center={{ lat: 24.6500, lng: 46.7000 }}
+          zoom={ZOOM_LEVELS.STREET}
+        >
+          {/* This will be populated by the component's state */}
+        </GoogleMap>
+      ),
+      code: `import { GoogleMap, Polyline, Marker } from '@react-google-maps/api';
+import { useState, useEffect, useCallback } from 'react';
+
+const BidirectionalTruckMovement = () => {
+  const [truckPosition, setTruckPosition] = useState(null);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [isMoving, setIsMoving] = useState(false);
+  const [direction, setDirection] = useState('forward'); // 'forward' or 'backward'
+  const [completedPath, setCompletedPath] = useState([]);
+
+  // Complex route with branches in Riyadh
+  const complexRoute = [
+    { lat: 24.7136, lng: 46.6753 }, // Start - Kingdom Centre
+    { lat: 24.7100, lng: 46.6800 }, // Point 1
+    { lat: 24.7050, lng: 46.6900 }, // Point 2
+    { lat: 24.7000, lng: 46.7000 }, // Junction point
+    { lat: 24.6950, lng: 46.7100 }, // Branch 1 - Point 4
+    { lat: 24.6900, lng: 46.7200 }, // Branch 1 - Point 5
+    { lat: 24.6850, lng: 46.7150 }, // Branch 1 - Point 6
+    { lat: 24.6800, lng: 46.7100 }, // Branch 1 - End point
+  ];
+
+  const calculateBearing = useCallback((start, end) => {
+    const dLng = (end.lng - start.lng) * Math.PI / 180;
+    const lat1 = start.lat * Math.PI / 180;
+    const lat2 = end.lat * Math.PI / 180;
+    
+    const y = Math.sin(dLng) * Math.cos(lat2);
+    const x = Math.cos(lat1) * Math.sin(lat2) - Math.sin(lat1) * Math.cos(lat2) * Math.cos(dLng);
+    
+    let bearing = (Math.atan2(y, x) * 180 / Math.PI + 360) % 360;
+    
+    // Adjust bearing for backward movement
+    if (direction === 'backward') {
+      bearing = (bearing + 180) % 360;
+    }
+    
+    return bearing;
+  }, [direction]);
+
+  useEffect(() => {
+    if (!isMoving) return;
+
+    const interval = setInterval(() => {
+      let nextIndex;
+      let currentPoint, nextPoint;
+
+      if (direction === 'forward') {
+        if (currentIndex >= complexRoute.length - 1) {
+          // Reached end, start going backward
+          setDirection('backward');
+          return;
+        }
+        nextIndex = currentIndex + 1;
+        currentPoint = complexRoute[currentIndex];
+        nextPoint = complexRoute[nextIndex];
+      } else {
+        if (currentIndex <= 0) {
+          // Reached start, start going forward
+          setDirection('forward');
+          return;
+        }
+        nextIndex = currentIndex - 1;
+        currentPoint = complexRoute[currentIndex];
+        nextPoint = complexRoute[nextIndex];
+      }
+
+      const bearing = calculateBearing(currentPoint, nextPoint);
+      
+      setTruckPosition({
+        ...nextPoint,
+        bearing: bearing
+      });
+      
+      setCurrentIndex(nextIndex);
+      
+      // Update completed path based on direction
+      if (direction === 'forward') {
+        setCompletedPath(complexRoute.slice(0, nextIndex + 1));
+      } else {
+        setCompletedPath(complexRoute.slice(nextIndex, currentIndex + 1));
+      }
+    }, 1500);
+
+    return () => clearInterval(interval);
+  }, [isMoving, currentIndex, direction, calculateBearing]);
+
+  const startMovement = () => {
+    setCurrentIndex(0);
+    setDirection('forward');
+    setCompletedPath([complexRoute[0]]);
+    setTruckPosition({ ...complexRoute[0], bearing: 0 });
+    setIsMoving(true);
+  };
+
+  const stopMovement = () => {
+    setIsMoving(false);
+  };
+
+  const resetMovement = () => {
+    setIsMoving(false);
+    setCurrentIndex(0);
+    setDirection('forward');
+    setCompletedPath([]);
+    setTruckPosition(null);
+  };
+
+  return (
+    <div>
+      <div style={{ marginBottom: '10px' }}>
+        <button onClick={startMovement} disabled={isMoving}>
+          ▶️ Start Movement
+        </button>
+        <button onClick={stopMovement} disabled={!isMoving} style={{ marginLeft: '10px' }}>
+          ⏸️ Stop
+        </button>
+        <button onClick={resetMovement} style={{ marginLeft: '10px' }}>
+          🔄 Reset
+        </button>
+        <span style={{ marginLeft: '15px' }}>
+          Direction: {direction === 'forward' ? '➡️ Forward' : '⬅️ Backward'} | 
+          Position: {currentIndex + 1}/{complexRoute.length}
+        </span>
+      </div>
+      
+      <GoogleMap
+        mapContainerStyle={{ width: '100%', height: '400px' }}
+        center={{ lat: 24.6950, lng: 46.6950 }}
+        zoom={13}
+      >
+        {/* Full route path */}
+        <Polyline
+          path={complexRoute}
+          options={{
+            strokeColor: '#E0E0E0',
+            strokeOpacity: 0.6,
+            strokeWeight: 3,
+            geodesic: true
+          }}
+        />
+        
+        {/* Active path */}
+        {completedPath.length > 1 && (
+          <Polyline
+            path={completedPath}
+            options={{
+              strokeColor: direction === 'forward' ? '#4CAF50' : '#FF9800',
+              strokeOpacity: 0.8,
+              strokeWeight: 5,
+              geodesic: true
+            }}
+          />
+        )}
+
+        {/* Route waypoints */}
+        {complexRoute.map((point, index) => (
+          <Marker
+            key={index}
+            position={point}
+            title={\`Waypoint \${index + 1}\`}
+            icon={{
+              url: 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(\`
+                <svg width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                  <circle cx="10" cy="10" r="8" fill="#9E9E9E" stroke="white" stroke-width="2"/>
+                  <text x="10" y="14" text-anchor="middle" fill="white" font-size="10" font-weight="bold">
+                    \${index + 1}
+                  </text>
+                </svg>
+              \`),
+              scaledSize: new window.google.maps.Size(20, 20)
+            }}
+          />
+        ))}
+
+        {/* Truck marker with proper orientation */}
+        {truckPosition && (
+          <Marker
+            position={truckPosition}
+            title={\`Truck - Moving \${direction}\`}
+            icon={{
+              url: 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(\`
+                <svg width="50" height="50" viewBox="0 0 50 50" xmlns="http://www.w3.org/2000/svg">
+                  <g transform="rotate(\${truckPosition.bearing} 25 25)">
+                    <rect x="10" y="15" width="30" height="20" fill="\${direction === 'forward' ? '#2196F3' : '#FF9800'}" stroke="white" stroke-width="2" rx="3"/>
+                    <rect x="10" y="20" width="20" height="10" fill="\${direction === 'forward' ? '#1976D2' : '#F57C00'}"/>
+                    <circle cx="17" cy="37" r="4" fill="#424242"/>
+                    <circle cx="33" cy="37" r="4" fill="#424242"/>
+                    <polygon points="40,15 45,20 45,25 40,25" fill="\${direction === 'forward' ? '#1976D2' : '#F57C00'}"/>
+                    <text x="25" y="28" text-anchor="middle" fill="white" font-size="8" font-weight="bold">
+                      \${direction === 'forward' ? '→' : '←'}
+                    </text>
+                  </g>
+                </svg>
+              \`),
+              scaledSize: new window.google.maps.Size(50, 50),
+              anchor: new window.google.maps.Point(25, 25)
+            }}
+          />
+        )}
+      </GoogleMap>
+    </div>
+  );
+};`
     }
   },
   propsData: {

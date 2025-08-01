@@ -139,6 +139,13 @@ export interface TasksProps {
   tasks: Task[];
 }
 
+// Control section interface for GeneralGuideControls
+export interface ControlSection {
+  title: string;
+  content: ReactNode;
+  condition?: boolean;
+}
+
 export interface GuideLayoutProps {
   title: string;
   subtitle: string;
@@ -160,6 +167,7 @@ export interface GuideLayoutProps {
   children?: ReactNode;
   onMapReset?: () => void;
   stylingExamples?: StylingExample[];
+  controlSections?: Record<string, ControlSection[]>;
 }
 
 export interface MapContainerProps {

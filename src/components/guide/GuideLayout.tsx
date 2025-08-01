@@ -8,6 +8,7 @@ import SimplifiedUseCases from './SimplifiedUseCases';
 import Tasks from './Tasks';
 import GuideNavigation from './GuideNavigation';
 import StylingCustomization from './StylingCustomization';
+import GeneralGuideControls from '../controls/guide/GeneralGuideControls';
 import { GuideLayoutProps } from '../../types/guide';
 
 const GuideLayout: React.FC<GuideLayoutProps> = ({
@@ -24,7 +25,8 @@ const GuideLayout: React.FC<GuideLayoutProps> = ({
   navigationLinks,
   children,
   onMapReset,
-  stylingExamples
+  stylingExamples,
+  controlSections
 }) => {
   const currentExample = examples[selectedExample];
 
@@ -43,11 +45,21 @@ const GuideLayout: React.FC<GuideLayoutProps> = ({
           onExampleChange={onExampleChange}
         />
 
-        {/* Controls above the map - only map controls, no titles */}
-        <div  style={{ paddingBottom: '5px' }}>
-        {children}
+        {/* Controls above the map - integrated GeneralGuideControls */}
+        <div style={{ 
+          paddingBottom: '5px',
+          maxHeight: '150px',
+          overflow: 'auto'
+        }}>
+          {controlSections ? (
+            <GeneralGuideControls
+              selectedExample={selectedExample}
+              controlSections={controlSections}
+            />
+          ) : (
+            children
+          )}
         </div>
-
 
         <DemoCodeSplit 
           example={currentExample} 

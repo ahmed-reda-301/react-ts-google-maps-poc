@@ -1,0 +1,312 @@
+/* Polygon Guide Compact Styling */
+
+/* Compact Control Groups */
+.control-group.compact {
+  padding: 8px 12px;
+  margin-bottom: 8px;
+  background: white;
+  border-radius: 8px;
+  border: 1px solid #e9ecef;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* Compact Info Display */
+.compact-info {
+  font-size: 14px;
+  color: #666;
+  text-align: center;
+  padding: 4px 0;
+}
+
+/* Compact Zones */
+.compact-zones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 8px;
+}
+
+.compact-zone-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border: 2px solid #e0e0e0;
+  border-radius: 20px;
+  background: white;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.compact-zone-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.compact-zone-btn.selected {
+  border-width: 2px;
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.zone-color-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 1px solid white;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.compact-selected {
+  font-size: 13px;
+  color: #666;
+  text-align: center;
+  padding: 4px 0;
+  border-top: 1px solid #f0f0f0;
+  margin-top: 8px;
+  padding-top: 8px;
+}
+
+/* Compact Status */
+.compact-status {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.status-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.status-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+}
+
+.status-dot.active {
+  background: #28a745;
+  box-shadow: 0 0 6px rgba(40, 167, 69, 0.5);
+  animation: pulse 2s infinite;
+}
+
+.status-dot.inactive {
+  background: #6c757d;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+
+.points-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 24px;
+  height: 24px;
+  background: #007bff;
+  color: white;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: bold;
+  padding: 0 6px;
+}
+
+.compact-controls {
+  display: flex;
+  gap: 6px;
+}
+
+.control-button.compact {
+  padding: 6px 12px;
+  font-size: 13px;
+  border-radius: 6px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.control-button.success {
+  background: #28a745;
+  border-color: #28a745;
+  color: white;
+}
+
+.control-button.success:hover {
+  background: #218838;
+  border-color: #1e7e34;
+}
+
+.control-button.danger {
+  background: #dc3545;
+  border-color: #dc3545;
+  color: white;
+}
+
+.control-button.danger:hover {
+  background: #c82333;
+  border-color: #bd2130;
+}
+
+.control-button.disabled {
+  background: #6c757d;
+  border-color: #6c757d;
+  color: white;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.compact-warning {
+  font-size: 12px;
+  color: #856404;
+  background: #fff3cd;
+  border: 1px solid #ffeaa7;
+  border-radius: 4px;
+  padding: 6px 8px;
+  text-align: center;
+  margin-top: 8px;
+}
+
+/* Compact Features */
+.compact-features {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+}
+
+.compact-features span {
+  font-size: 13px;
+  color: #666;
+  padding: 4px 8px;
+  background: #f8f9fa;
+  border-radius: 12px;
+  border: 1px solid #e9ecef;
+}
+
+/* Compact Styles */
+.compact-styles {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+}
+
+.style-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  text-align: center;
+}
+
+.style-preview {
+  width: 32px;
+  height: 20px;
+  border-radius: 4px;
+  border: 2px solid transparent;
+}
+
+.style-preview.fill {
+  opacity: 0.7;
+}
+
+.style-preview.stroke {
+  background: transparent;
+  border: 2px solid #4ecdc4;
+}
+
+.style-preview.opacity {
+  opacity: 0.5;
+}
+
+.style-preview.weight {
+  background: transparent;
+  border: 3px solid #96ceb4;
+}
+
+.style-item span {
+  font-size: 11px;
+  color: #666;
+  font-weight: 500;
+}
+
+/* Responsive Design for Compact Layout */
+@media (max-width: 768px) {
+  .compact-status {
+    flex-direction: column;
+    gap: 8px;
+    text-align: center;
+  }
+  
+  .compact-controls {
+    justify-content: center;
+  }
+  
+  .compact-styles {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .compact-zones {
+    justify-content: center;
+  }
+  
+  .compact-zone-btn {
+    flex: 1;
+    min-width: 0;
+    justify-content: center;
+  }
+  
+  .compact-controls {
+    flex-direction: column;
+    width: 100%;
+  }
+  
+  .control-button.compact {
+    width: 100%;
+  }
+  
+  .compact-styles {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Override any existing large styles */
+.zone-grid,
+.builder-status,
+.building-stats,
+.feature-list,
+.styling-grid,
+.zone-card,
+.feature-item,
+.style-option {
+  display: none !important;
+}
+
+/* Ensure compact layout takes minimal space */
+.controls-panel {
+  max-height: 120px;
+  overflow: visible;
+}
+
+.control-section {
+  margin-bottom: 8px;
+}
+
+.control-section h4 {
+  font-size: 14px;
+  margin: 0 0 8px 0;
+  color: #333;
+  font-weight: 600;
+}

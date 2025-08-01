@@ -1,7 +1,6 @@
 import React from 'react';
 import { GoogleMap, Marker, InfoWindow } from '@react-google-maps/api';
 import GuideLayout from '../../components/guide/GuideLayout';
-import InfoWindowControls from '../../components/controls/guide/InfoWindowControls';
 import { infoWindowGuideData } from '../../data/guide/infoWindowGuideData';
 import { useInfoWindowGuideState } from '../../hooks/useGuideState';
 import { 
@@ -13,6 +12,7 @@ import {
   GUIDE_STYLES
 } from '../../constants/guideConstants';
 import { infoWindowTemplates } from '../../data/guide/commonGuideData';
+import '../../styles/compact-controls.css';
 
 const InfoWindowGuide: React.FC = () => {
   const {
@@ -375,6 +375,98 @@ const InfoWindowGuide: React.FC = () => {
     }
   ];
 
+  // Define control sections for each example - compact design
+  const controlSections = {
+    basic: [
+      {
+        title: 'Basic InfoWindow',
+        content: (
+          <div className="control-group compact">
+            <div className="compact-info">
+              💬 Simple Content • 📍 Kingdom Centre • 🎯 Click to Open
+            </div>
+          </div>
+        )
+      }
+    ],
+    markerBased: [
+      {
+        title: 'Marker-Based InfoWindows',
+        content: (
+          <div className="control-group compact">
+            <div className="compact-markers">
+              {landmarks.map(landmark => (
+                <button
+                  key={landmark.id}
+                  onClick={() => handleMarkerClick(landmark.id.toString())}
+                  className={`compact-marker-btn ${selectedMarker === landmark.id.toString() ? 'selected' : ''}`}
+                >
+                  📍 {landmark.title}
+                </button>
+              ))}
+            </div>
+            {selectedMarker && selectedMarker !== 'basic' && selectedMarker !== 'rich' && selectedMarker !== 'styled' && selectedMarker !== 'interactive' && (
+              <div className="compact-selected">
+                Open: <strong>{landmarks.find(l => l.id.toString() === selectedMarker)?.title}</strong>
+              </div>
+            )}
+          </div>
+        )
+      }
+    ],
+    richContent: [
+      {
+        title: 'Rich Content',
+        content: (
+          <div className="control-group compact">
+            <div className="compact-features">
+              <span>🖼️ Images</span>
+              <span>🎨 Styling</span>
+              <span>🔘 Buttons</span>
+              <span>📝 Rich Text</span>
+            </div>
+          </div>
+        )
+      }
+    ],
+    customStyling: [
+      {
+        title: 'Custom Styling',
+        content: (
+          <div className="control-group compact">
+            <div className="compact-features">
+              <span>🌈 Gradients</span>
+              <span>🎨 Colors</span>
+              <span>📏 Layout</span>
+              <span>✨ Effects</span>
+            </div>
+          </div>
+        )
+      }
+    ],
+    interactive: [
+      {
+        title: 'Interactive Form',
+        content: (
+          <div className="control-group compact">
+            <div className="compact-status">
+              <div className="status-info">
+                <span>⭐ Rating: {formData.rating}/5</span>
+                <span>💬 Comment: {formData.comment ? 'Yes' : 'No'}</span>
+              </div>
+              <button 
+                onClick={() => updateFormData({ rating: 0, comment: '' })}
+                className="control-button secondary compact"
+              >
+                🔄 Reset Form
+              </button>
+            </div>
+          </div>
+        )
+      }
+    ]
+  };
+
   return (
     <GuideLayout
       title={infoWindowGuideData.title}
@@ -390,12 +482,8 @@ const InfoWindowGuide: React.FC = () => {
       navigationLinks={infoWindowGuideData.navigationLinks}
       onMapReset={resetInfoWindowState}
       stylingExamples={stylingExamples}
-    >
-      <InfoWindowControls
-        selectedExample={selectedExample}
-        formData={formData}
-      />
-    </GuideLayout>
+      controlSections={controlSections}
+    />
   );
 };
 

@@ -1,7 +1,6 @@
 import React, { useCallback } from 'react';
 import { GoogleMap, Circle, Marker } from '@react-google-maps/api';
 import GuideLayout from '../../components/guide/GuideLayout';
-import CircleControls from '../../components/controls/guide/CircleControls';
 import { circleGuideData } from '../../data/guide/circleGuideData';
 import { useCircleGuideState } from '../../hooks/useGuideState';
 import { 
@@ -14,6 +13,17 @@ import {
 } from '../../constants/guideConstants';
 import { commonCoverageAreas, commonColorSchemes } from '../../data/guide/commonGuideData';
 import { createMapClickHandler } from '../../utils/guideHelpers';
+import {
+  createSliderSection,
+  createButtonGroupSection,
+  createColorPickerSection,
+  createListSelectionSection,
+  createStatsSection,
+  createToggleSection,
+  formatDistance,
+  formatArea,
+  formatCoordinates
+} from '../../utils/controlSectionHelpers';
 
 const CircleGuide: React.FC = () => {
   const {
@@ -284,6 +294,164 @@ const onLoad = useCallback((circleInstance) => {
     }
   ];
 
+  // Define control sections for each example
+  const controlSections = {
+    basic: [
+      {
+        title: 'Radius Control',
+        content: (
+          <div className="control-group">
+            <label className="control-label">
+              Radius: {basicRadius >= 1000 ? `${basicRadius/1000}km` : `${basicRadius}m`}
+            </label>
+            <input
+              type="range"
+              min="1000"
+              max="20000"
+              step="1000"
+              value={basicRadius}
+              onChange={(e) => setBasicRadius(parseInt(e.target.value))}
+              className="control-slider"
+            />
+            <div className="info-display">
+              <p>Area: {((Math.PI * Math.pow(basicRadius, 2)) / 1000000).toFixed(2)} km²</p>
+            </div>
+          </div>
+        )
+      }
+    ],
+    coverage: [
+      {
+        title: 'Coverage Areas',
+        content: (
+          <div>
+            <p className="instruction">Click on any circle to highlight it and see details</p>
+            <div className="coverage-grid">
+              {coverageAreas.map(area => (
+                <button
+                  key={area.id}
+                  onClick={() => handleAreaClick(area.id)}
+                  className={`coverage-button ${selectedArea === area.id ? 'selected' : ''}`}
+                  style={{
+                    borderColor: area.color,
+                    backgroundColor: selectedArea === area.id ? area.color + '20' : 'transparent'
+                  }}
+                >
+                  <span className="coverage-icon">{area.icon || '📍'}</span>
+                  <div className="coverage-info">
+                    <strong>{area.name}</strong>
+                    <div>Radius: {area.radius >= 1000 ? `${area.radius/1000}km` : `${area.radius}m`}</div>
+                    <div>{area.description}</div>
+                  </div>
+                </button>
+              ))}
+            </div>
+          </div>
+        )
+      }
+    ],
+    interactive: [
+      {
+        title: 'Circle Builder Controls',
+        content: (
+          <div className="control-group">
+            <p className="instruction">
+              {isCreating 
+                ? 'Click on the map to place a circle'
+                : 'Configure your circle settings and click "Start Creating" to add circles to the map'
+              }
+            </p>
+            
+            <div className="control-row">
+              <div className="control-item">
+                <label className="control-label">
+                  Radius: {selectedRadius >= 1000 ? `${selectedRadius/1000}km` : `${selectedRadius}m`}
+                </label>
+                <input
+                  type="range"
+                  min="500"
+                  max="10000"
+                  step="500"
+                  value={selectedRadius}
+                  onChange={(e) => setSelectedRadius(parseInt(e.target.value))}
+                  className="control-slider"
+                />
+              </div>
+              
+              <div className="control-item">
+                <label className="control-label">Color:</label>
+                <div className="color-picker">
+                  {commonColorSchemes.map(color => (
+                    <button
+                      key={color.value}
+                      onClick={() => setSelectedColor(color.value)}
+                      className={`color-button ${selectedColor === color.value ? 'selected' : ''}`}
+                      style={{ backgroundColor: color.value }}
+                      title={color.name}
+                    />
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            <div className="button-group">
+              <button 
+                onClick={() => setIsCreating(!isCreating)}
+                className={`control-button ${isCreating ? 'danger' : 'primary'}`}
+              >
+                {isCreating ? 'Cancel Creating' : 'Start Creating'}
+              </button>
+              
+              <button 
+                onClick={clearCircles}
+                disabled={interactiveCircles.length === 0}
+                className="control-button secondary"
+              >
+                Clear All
+              </button>
+            </div>
+
+            <div className="info-display">
+              <p>Circles: {interactiveCircles.length}</p>
+              {interactiveCircles.length > 0 && (
+                <p>Total Area: {(interactiveCircles.reduce((sum, circle) => 
+                  sum + (Math.PI * Math.pow(circle.radius, 2)), 0) / 1000000).toFixed(2)} km²</p>
+              )}
+            </div>
+          </div>
+        )
+      }
+    ],
+    editable: [
+      {
+        title: 'Editable Circle Controls',
+        content: (
+          <div className="control-group">
+            <p className="instruction">
+              {isEditable 
+                ? 'Drag the circle to move it or drag the edge to resize it'
+                : 'Click "Enable Editing" to make the circle interactive'
+              }
+            </p>
+            
+            <button 
+              onClick={() => setIsEditable(!isEditable)}
+              className={`control-button ${isEditable ? 'warning' : 'primary'}`}
+            >
+              {isEditable ? 'Disable Editing' : 'Enable Editing'}
+            </button>
+
+            <div className="info-display">
+              <p>Center: {editableCircle.center.lat.toFixed(4)}, {editableCircle.center.lng.toFixed(4)}</p>
+              <p>Radius: {editableCircle.radius >= 1000 ? `${(editableCircle.radius/1000).toFixed(1)}km` : `${Math.round(editableCircle.radius)}m`}</p>
+              <p>Area: {((Math.PI * Math.pow(editableCircle.radius, 2)) / 1000000).toFixed(2)} km²</p>
+            </div>
+          </div>
+        )
+      }
+    ]
+  };
+
   return (
     <GuideLayout
       title={circleGuideData.title}
@@ -299,28 +467,8 @@ const onLoad = useCallback((circleInstance) => {
       navigationLinks={circleGuideData.navigationLinks}
       stylingExamples={stylingExamples}
       onMapReset={resetCircleState}
-    >
-      <CircleControls
-        selectedExample={selectedExample}
-        basicRadius={basicRadius}
-        onBasicRadiusChange={setBasicRadius}
-        selectedArea={selectedArea}
-        coverageAreas={coverageAreas}
-        onAreaSelect={handleAreaClick}
-        interactiveCircles={interactiveCircles}
-        isCreating={isCreating}
-        selectedRadius={selectedRadius}
-        selectedColor={selectedColor}
-        onStartCreating={() => setIsCreating(true)}
-        onCancelCreating={() => setIsCreating(false)}
-        onRadiusChange={setSelectedRadius}
-        onColorChange={setSelectedColor}
-        onClearCircles={clearCircles}
-        editableCircle={editableCircle}
-        isEditable={isEditable}
-        onToggleEditable={() => setIsEditable(!isEditable)}
-      />
-    </GuideLayout>
+      controlSections={controlSections}
+    />
   );
 };
 

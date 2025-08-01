@@ -1,0 +1,559 @@
+/* Compact Controls - Universal Styling for All Guide Pages */
+
+/* Base Compact Control Groups */
+.control-group.compact {
+  padding: 8px 12px;
+  margin-bottom: 8px;
+  background: white;
+  border-radius: 8px;
+  border: 1px solid #e9ecef;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* Compact Info Display */
+.compact-info {
+  font-size: 14px;
+  color: #666;
+  text-align: center;
+  padding: 4px 0;
+  line-height: 1.4;
+}
+
+/* Compact Markers/Zones/Items */
+.compact-markers,
+.compact-zones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 8px;
+}
+
+.compact-marker-btn,
+.compact-zone-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border: 2px solid #e0e0e0;
+  border-radius: 20px;
+  background: white;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 13px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.compact-marker-btn:hover,
+.compact-zone-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.compact-marker-btn.selected,
+.compact-zone-btn.selected {
+  border-width: 2px;
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.zone-color-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 1px solid white;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+  flex-shrink: 0;
+}
+
+/* Compact Selected Info */
+.compact-selected {
+  font-size: 13px;
+  color: #666;
+  text-align: center;
+  padding: 4px 0;
+  border-top: 1px solid #f0f0f0;
+  margin-top: 8px;
+  padding-top: 8px;
+}
+
+/* Compact Status */
+.compact-status {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.status-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  flex-wrap: wrap;
+}
+
+.status-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+  flex-shrink: 0;
+}
+
+.status-dot.active {
+  background: #28a745;
+  box-shadow: 0 0 6px rgba(40, 167, 69, 0.5);
+  animation: pulse 2s infinite;
+}
+
+.status-dot.inactive {
+  background: #6c757d;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+
+.points-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 24px;
+  height: 24px;
+  background: #007bff;
+  color: white;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: bold;
+  padding: 0 6px;
+  flex-shrink: 0;
+}
+
+/* Compact Controls */
+.compact-controls {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.control-button.compact {
+  padding: 6px 12px;
+  font-size: 13px;
+  border-radius: 6px;
+  font-weight: 500;
+  white-space: nowrap;
+  border: 1px solid #ddd;
+  background: white;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.control-button.primary {
+  background: #007bff;
+  border-color: #007bff;
+  color: white;
+}
+
+.control-button.primary:hover {
+  background: #0056b3;
+  border-color: #004085;
+}
+
+.control-button.secondary {
+  background: #6c757d;
+  border-color: #6c757d;
+  color: white;
+}
+
+.control-button.secondary:hover {
+  background: #545b62;
+  border-color: #4e555b;
+}
+
+.control-button.success {
+  background: #28a745;
+  border-color: #28a745;
+  color: white;
+}
+
+.control-button.success:hover {
+  background: #218838;
+  border-color: #1e7e34;
+}
+
+.control-button.danger {
+  background: #dc3545;
+  border-color: #dc3545;
+  color: white;
+}
+
+.control-button.danger:hover {
+  background: #c82333;
+  border-color: #bd2130;
+}
+
+.control-button.disabled {
+  background: #6c757d;
+  border-color: #6c757d;
+  color: white;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.control-button.disabled:hover {
+  background: #6c757d;
+  border-color: #6c757d;
+  transform: none;
+}
+
+/* Compact Warning/Success Messages */
+.compact-warning {
+  font-size: 12px;
+  color: #856404;
+  background: #fff3cd;
+  border: 1px solid #ffeaa7;
+  border-radius: 4px;
+  padding: 6px 8px;
+  text-align: center;
+  margin-top: 8px;
+}
+
+.compact-success {
+  font-size: 12px;
+  color: #155724;
+  background: #d4edda;
+  border: 1px solid #c3e6cb;
+  border-radius: 4px;
+  padding: 6px 8px;
+  text-align: center;
+  margin-top: 8px;
+}
+
+/* Compact Features */
+.compact-features {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+}
+
+.compact-features span {
+  font-size: 13px;
+  color: #666;
+  padding: 4px 8px;
+  background: #f8f9fa;
+  border-radius: 12px;
+  border: 1px solid #e9ecef;
+  white-space: nowrap;
+}
+
+/* Compact Styles Grid */
+.compact-styles {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+}
+
+.style-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  text-align: center;
+}
+
+.style-preview {
+  width: 32px;
+  height: 20px;
+  border-radius: 4px;
+  border: 2px solid transparent;
+  flex-shrink: 0;
+}
+
+.style-preview.fill {
+  opacity: 0.7;
+}
+
+.style-preview.stroke {
+  background: transparent;
+  border: 2px solid #4ecdc4;
+}
+
+.style-preview.opacity {
+  opacity: 0.5;
+}
+
+.style-preview.weight {
+  background: transparent;
+  border: 3px solid #96ceb4;
+}
+
+.style-preview.geodesic {
+  background: transparent;
+  border: 3px dashed #96ceb4;
+}
+
+.style-preview.bounds {
+  background: transparent;
+  border: 3px dashed #96ceb4;
+}
+
+.style-item span {
+  font-size: 11px;
+  color: #666;
+  font-weight: 500;
+}
+
+/* Position Info */
+.compact-position {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.position-info {
+  font-size: 13px;
+  color: #666;
+  font-family: monospace;
+}
+
+/* Responsive Design for Compact Layout */
+@media (max-width: 768px) {
+  .compact-status {
+    flex-direction: column;
+    gap: 8px;
+    text-align: center;
+  }
+  
+  .compact-position {
+    flex-direction: column;
+    gap: 8px;
+    text-align: center;
+  }
+  
+  .compact-controls {
+    justify-content: center;
+    width: 100%;
+  }
+  
+  .compact-styles {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .status-info {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .compact-markers,
+  .compact-zones {
+    justify-content: center;
+  }
+  
+  .compact-marker-btn,
+  .compact-zone-btn {
+    flex: 1;
+    min-width: 0;
+    justify-content: center;
+  }
+  
+  .compact-controls {
+    flex-direction: column;
+    width: 100%;
+  }
+  
+  .control-button.compact {
+    width: 100%;
+  }
+  
+  .compact-styles {
+    grid-template-columns: 1fr;
+  }
+  
+  .compact-features {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .compact-features span {
+    width: 100%;
+    text-align: center;
+  }
+}
+
+/* Override any existing large styles */
+.zone-grid,
+.builder-status,
+.building-stats,
+.feature-list,
+.styling-grid,
+.zone-card,
+.feature-item,
+.style-option,
+.marker-list,
+.animation-controls {
+  display: none !important;
+}
+
+/* Ensure compact layout takes minimal space */
+.controls-panel {
+  max-height: 120px;
+  overflow: visible;
+}
+
+.control-section {
+  margin-bottom: 8px;
+}
+
+.control-section h4 {
+  font-size: 14px;
+  margin: 0 0 8px 0;
+  color: #333;
+  font-weight: 600;
+}
+
+/* Specific adjustments for different guide types */
+.compact-marker-btn {
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.compact-zone-btn {
+  max-width: 180px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Animation for status changes */
+.status-info span {
+  transition: color 0.3s ease;
+}
+
+.points-badge {
+  transition: all 0.3s ease;
+}
+
+.points-badge:hover {
+  transform: scale(1.1);
+}
+
+/* Focus states for accessibility */
+.compact-marker-btn:focus,
+.compact-zone-btn:focus,
+.control-button:focus {
+  outline: 2px solid #007bff;
+  outline-offset: 2px;
+}
+
+/* Loading states */
+.compact-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 13px;
+  color: #666;
+  padding: 8px;
+}
+
+.compact-loading::before {
+  content: '';
+  width: 16px;
+  height: 16px;
+  border: 2px solid #f3f3f3;
+  border-top: 2px solid #007bff;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+/* Truck Tracking Specific Styles */
+.control-button.warning {
+  background: #ffc107;
+  border-color: #ffc107;
+  color: #212529;
+}
+
+.control-button.warning:hover {
+  background: #e0a800;
+  border-color: #d39e00;
+}
+
+.route-legend {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 8px;
+  flex-wrap: wrap;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  color: #666;
+}
+
+.legend-color {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 1px solid white;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.legend-color.start {
+  background: #4CAF50;
+}
+
+.legend-color.waypoint {
+  background: #FF9800;
+}
+
+.legend-color.end {
+  background: #F44336;
+}
+
+/* Enhanced status dots for truck tracking */
+.status-dot.tracking {
+  background: #4CAF50;
+  box-shadow: 0 0 8px rgba(76, 175, 80, 0.6);
+  animation: tracking-pulse 1.5s infinite;
+}
+
+.status-dot.moving-forward {
+  background: #2196F3;
+  box-shadow: 0 0 8px rgba(33, 150, 243, 0.6);
+}
+
+.status-dot.moving-backward {
+  background: #FF9800;
+  box-shadow: 0 0 8px rgba(255, 152, 0, 0.6);
+}
+
+@keyframes tracking-pulse {
+  0% { 
+    transform: scale(1);
+    box-shadow: 0 0 8px rgba(76, 175, 80, 0.6);
+  }
+  50% { 
+    transform: scale(1.2);
+    box-shadow: 0 0 12px rgba(76, 175, 80, 0.8);
+  }
+  100% { 
+    transform: scale(1);
+    box-shadow: 0 0 8px rgba(76, 175, 80, 0.6);
+  }
+}

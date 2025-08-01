@@ -22,8 +22,6 @@ import PolylineGuide from './pages/guides/PolylineGuide';
 import PolygonGuide from './pages/guides/PolygonGuide';
 import CircleGuide from './pages/guides/CircleGuide';
 import RectangleGuide from './pages/guides/RectangleGuide';
-import TestGuide from './pages/guides/TestGuide';
-import SimpleTestGuide from './pages/guides/SimpleTestGuide';
 import './App.css';
 
 /**
@@ -56,10 +54,6 @@ const App: FC = () => {
         <Route path="/components-guide/polygon" element={<GuideLayout><PolygonGuide /></GuideLayout>} />
         <Route path="/components-guide/circle" element={<GuideLayout><CircleGuide /></GuideLayout>} />
         <Route path="/components-guide/rectangle" element={<GuideLayout><RectangleGuide /></GuideLayout>} />
-        
-        {/* Test pages */}
-        <Route path="/test-guide" element={<GuideLayout><TestGuide /></GuideLayout>} />
-        <Route path="/simple-test" element={<GuideLayout><SimpleTestGuide /></GuideLayout>} />
       </Routes>
     </Router>
   );
